@@ -106,6 +106,36 @@ describe('Query', () => {
     })
   })
 
+  it('can not get an user that does not exist (400)', async () => {
+    expect.assertions(1)
+
+    fetchMock.get('/users/2', 400)
+
+    const userProfileQuery = gql`
+      query userProfile($id: ID!) {
+        userProfile(id: $id)
+          @rest(type: "User", route: "/users/:id", params: { id: $id }) {
+          id
+          login
+        }
+      }
+    `
+
+    const link = createRestLink()
+
+    const data = await makePromise(
+      execute(link, {
+        operationName: 'userProfile',
+        query: userProfileQuery,
+        variables: { id: '2' },
+      }),
+    )
+
+    expect(data).toEqual({
+      userProfile: null,
+    })
+  })
+
   it('can load relations with the provider arguments', async () => {
     expect.assertions(1)
 

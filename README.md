@@ -59,5 +59,5 @@ makePromise(execute(link, { operationName: `userProfile`, query }))
 # Tests
 
 ```shell
-npx jest
+yarn test
 ```

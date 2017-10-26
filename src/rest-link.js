@@ -119,11 +119,16 @@ const processSelectionSet = (selectionSet, fetcher, variables, resultObject) =>
     Promise.all(
       fetchTasks.map(task =>
         fetcher(task.route, { method: 'GET' })
-          .then(result => result.json())
+          .then(response => {
+            if (!response.ok) return undefined
+            return response.json()
+          })
           .then(json => ({
-            [task.name]: Array.isArray(json)
-              ? json.map(obj => ({ ...obj, __typename: task.typeName }))
-              : { ...json, __typename: task.typeName },
+            [task.name]: json
+              ? Array.isArray(json)
+                ? json.map(obj => ({ ...obj, __typename: task.typeName }))
+                : { ...json, __typename: task.typeName }
+              : null,
           })),
       ),
     )
@@ -133,15 +138,18 @@ const processSelectionSet = (selectionSet, fetcher, variables, resultObject) =>
         const subRestFields = selectionSet.selections.filter(
           field => field.selectionSet,
         )
+
         Promise.all(
-          subRestFields.map(field =>
-            processSelectionSet(
-              field.selectionSet,
-              fetcher,
-              variables,
-              resultObject[field.name.value],
+          subRestFields
+            .filter(field => resultObject[field.name.value] !== null)
+            .map(field =>
+              processSelectionSet(
+                field.selectionSet,
+                fetcher,
+                variables,
+                resultObject[field.name.value],
+              ),
             ),
-          ),
         )
           .then(() => {
             resolve(result)
