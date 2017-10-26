@@ -81,7 +81,7 @@ describe("Query", () => {
     });
   });
 
-  it("it throws if a variable user as a param is missing", async () => {
+  it("throws if a variable user as a param is missing", async () => {
     expect.assertions(1);
 
     const userProfileQuery = gql`
@@ -103,6 +103,75 @@ describe("Query", () => {
       })
     ).catch(err => {
       expect(err.message).toEqual("Missing variable 'id'");
+    });
+  });
+
+  it("can load relations with the provider arguments", async () => {
+    expect.assertions(1);
+
+    fetchMock.get("/users/2", {
+      id: "2",
+      login: "Jochen"
+    });
+
+    fetchMock.get("/users/2/friends", [
+      {
+        id: "1",
+        login: "Peter"
+      },
+      {
+        id: "3",
+        login: "Joachim"
+      }
+    ]);
+
+    const userProfileQuery = gql`
+      query userProfile($id: ID!) {
+        userProfile(id: $id)
+          @rest(type: "User", route: "/users/:id", params: { id: $id }) {
+          id
+          login
+          friends
+            @rest(
+              type: "User"
+              route: "/users/:userId/friends"
+              provides: { userId: "id" }
+            ) {
+            id
+            login
+          }
+        }
+      }
+    `;
+
+    const link = createRestLink();
+
+    const data = await makePromise(
+      execute(link, {
+        operationName: "userProfile",
+        query: userProfileQuery,
+        variables: { id: 2 }
+      })
+    );
+
+    expect(data).toEqual({
+      userProfile: {
+        __typename: "User",
+        id: "2",
+        login: "Jochen",
+        friends: [
+          {
+            __typename: "User",
+            id: "1",
+            login: "Peter"
+          },
+          {
+            __typename: "User",
+            id: "3",
+            login: "Joachim"
+          }
+        ]
+      }
     });
   });
 });

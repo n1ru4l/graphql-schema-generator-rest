@@ -11,6 +11,14 @@ query userProfile($id: ID!) {
   userProfile(id: $id) @rest(type: "User", route: "/users/:id", params: { id: $id }) {
     id
     login
+    friends @rest(
+      type: "User"
+      route: "/users/:userId/friends"
+      provides: { userId: "id" }
+    ) {
+      id
+      login
+    }
   }
 }
 ```

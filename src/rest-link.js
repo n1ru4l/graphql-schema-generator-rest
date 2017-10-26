@@ -28,15 +28,35 @@ const parseParams = url =>
     .filter(part => part.charAt(0) === ":")
     .map(part => part.substr(1));
 
+const getProvides = (directive, resultObject) => {
+  const arg = directive.arguments.find(
+    arg => arg.kind === "Argument" && arg.name.value === "provides"
+  );
+  if (!arg) return [];
+  if (arg.value.kind !== "ObjectValue")
+    throw new Error("Argument params must be an object.");
+
+  return arg.value.fields.map(field => {
+    const name = field.name.value;
+    const objectPropertyName = field.value.value;
+    const value = resultObject[objectPropertyName];
+    if (!value) throw new Error(`Missing field '${field.name.value}'`);
+
+    return {
+      name,
+      value
+    };
+  });
+};
+
 const getParams = (directive, variables) => {
   const arg = directive.arguments.find(
     arg => arg.kind === "Argument" && arg.name.value === "params"
   );
-  if (!arg) return {};
+  if (!arg) return [];
   if (arg.value.kind !== "ObjectValue")
     throw new Error("Argument params must be an object.");
 
-  const params = {};
   return arg.value.fields.map(field => {
     let value = field.value.value;
     if (field.value.kind === "Variable") {
@@ -63,21 +83,15 @@ const generateRouteWithParams = (route, params) =>
     route
   );
 
-export const createRestLink = ({ fetcher } = {}) => {
-  if (!fetcher) fetcher = fetch;
+const hasSelectionSet = field => !!field.selectionSet;
 
-  return new ApolloLink(operation => {
-    return new Observable(observer => {
-      const queryDefinition = operation.query.definitions[0];
-      const { variableDefinitions } = queryDefinition;
-      const { variables } = operation;
-      // console.log(JSON.stringify(variables, 0, 2));
+const processSelectionSet = (selectionSet, fetcher, variables, resultObject) =>
+  new Promise((resolve, reject) => {
+    const fieldsWithRestDirective = findRestDirectiveFields(selectionSet);
 
-      const fieldsWithRestDirective = findRestDirectiveFields(
-        queryDefinition.selectionSet
-      );
-
-      const fetchTasks = fieldsWithRestDirective.map(field => {
+    let fetchTasks = undefined;
+    try {
+      fetchTasks = fieldsWithRestDirective.map(field => {
         const directive = getRestDirective(field);
         const typeName = getTypeName(directive);
         if (!typeName) throw new Error("Missing type argument.");
@@ -85,7 +99,10 @@ export const createRestLink = ({ fetcher } = {}) => {
         if (!route) throw new Error("Missing route argument.");
         const requiredParams = parseParams(route);
 
-        const params = getParams(directive, variables);
+        const params = [
+          ...getParams(directive, variables),
+          ...getProvides(directive, resultObject)
+        ];
         checkRequiredParams(requiredParams, params);
 
         const routeWithParams = generateRouteWithParams(route, params);
@@ -96,20 +113,61 @@ export const createRestLink = ({ fetcher } = {}) => {
           route: routeWithParams
         };
       });
+    } catch (err) {
+      reject(err);
+      return;
+    }
 
-      Promise.all(
-        fetchTasks.map(task =>
-          fetcher(task.route, { method: "GET" })
-            .then(result => result.json())
-            .then(json => ({
-              [task.name]: { ...json, __typename: task.typeName }
-            }))
-        )
+    Promise.all(
+      fetchTasks.map(task =>
+        fetcher(task.route, { method: "GET" })
+          .then(result => result.json())
+          .then(json => ({
+            [task.name]: Array.isArray(json)
+              ? json.map(obj => ({ ...obj, __typename: task.typeName }))
+              : { ...json, __typename: task.typeName }
+          }))
       )
-        .then(results => Object.assign({}, ...results))
-        .then(composedResult => {
-          observer.next(composedResult);
+    )
+      .then(results => Object.assign({}, ...results))
+      .then(result => {
+        Object.assign(resultObject, result);
+        const subRestFields = selectionSet.selections.filter(
+          field => field.selectionSet
+        );
+        Promise.all(
+          subRestFields.map(field =>
+            processSelectionSet(
+              field.selectionSet,
+              fetcher,
+              variables,
+              resultObject[field.name.value]
+            )
+          )
+        )
+          .then(fields => {
+            resolve(result);
+          })
+          .catch(reject);
+      });
+  });
+
+export const createRestLink = ({ fetcher } = {}) => {
+  if (!fetcher) fetcher = fetch;
+
+  return new ApolloLink(operation => {
+    return new Observable(observer => {
+      const queryDefinition = operation.query.definitions[0];
+      const { variableDefinitions, selectionSet } = queryDefinition;
+      const { variables } = operation;
+
+      processSelectionSet(selectionSet, fetcher, variables, {})
+        .then(result => {
+          observer.next(result);
           observer.complete();
+        })
+        .catch(err => {
+          observer.error(err);
         });
     });
   });
