@@ -1,20 +1,20 @@
-import { createRestLink } from "../rest-link";
-import { execute, makePromise } from "apollo-link";
-import gql from "graphql-tag";
-import fetchMock from "fetch-mock";
+import { createRestLink } from '../rest-link'
+import { execute, makePromise } from 'apollo-link'
+import gql from 'graphql-tag'
+import fetchMock from 'fetch-mock'
 
-describe("Query", () => {
+describe('Query', () => {
   afterEach(() => {
-    fetchMock.restore();
-  });
+    fetchMock.restore()
+  })
 
-  it("can get an user by id", async () => {
-    expect.assertions(1);
+  it('can get an user by id', async () => {
+    expect.assertions(1)
 
-    fetchMock.get("/users/1", {
-      id: "1",
-      login: "Peter"
-    });
+    fetchMock.get('/users/1', {
+      id: '1',
+      login: 'Peter',
+    })
 
     const userProfileQuery = gql`
       query userProfile {
@@ -24,65 +24,33 @@ describe("Query", () => {
           login
         }
       }
-    `;
+    `
 
-    const link = createRestLink();
-
-    const data = await makePromise(
-      execute(link, {
-        operationName: "userProfile",
-        query: userProfileQuery
-      })
-    );
-
-    expect(data).toEqual({
-      userProfile: {
-        __typename: "User",
-        id: "1",
-        login: "Peter"
-      }
-    });
-  });
-
-  it("can get an user by id based on variable", async () => {
-    expect.assertions(1);
-
-    fetchMock.get("/users/2", {
-      id: "2",
-      login: "Jochen"
-    });
-
-    const userProfileQuery = gql`
-      query userProfile($id: ID!) {
-        userProfile(id: $id)
-          @rest(type: "User", route: "/users/:id", params: { id: $id }) {
-          id
-          login
-        }
-      }
-    `;
-
-    const link = createRestLink();
+    const link = createRestLink()
 
     const data = await makePromise(
       execute(link, {
-        operationName: "userProfile",
+        operationName: 'userProfile',
         query: userProfileQuery,
-        variables: { id: "2" }
-      })
-    );
+      }),
+    )
 
     expect(data).toEqual({
       userProfile: {
-        __typename: "User",
-        id: "2",
-        login: "Jochen"
-      }
-    });
-  });
+        __typename: 'User',
+        id: '1',
+        login: 'Peter',
+      },
+    })
+  })
 
-  it("throws if a variable user as a param is missing", async () => {
-    expect.assertions(1);
+  it('can get an user by id based on variable', async () => {
+    expect.assertions(1)
+
+    fetchMock.get('/users/2', {
+      id: '2',
+      login: 'Jochen',
+    })
 
     const userProfileQuery = gql`
       query userProfile($id: ID!) {
@@ -92,38 +60,70 @@ describe("Query", () => {
           login
         }
       }
-    `;
+    `
 
-    const link = createRestLink();
+    const link = createRestLink()
+
+    const data = await makePromise(
+      execute(link, {
+        operationName: 'userProfile',
+        query: userProfileQuery,
+        variables: { id: '2' },
+      }),
+    )
+
+    expect(data).toEqual({
+      userProfile: {
+        __typename: 'User',
+        id: '2',
+        login: 'Jochen',
+      },
+    })
+  })
+
+  it('throws if a variable user as a param is missing', async () => {
+    expect.assertions(1)
+
+    const userProfileQuery = gql`
+      query userProfile($id: ID!) {
+        userProfile(id: $id)
+          @rest(type: "User", route: "/users/:id", params: { id: $id }) {
+          id
+          login
+        }
+      }
+    `
+
+    const link = createRestLink()
 
     return makePromise(
       execute(link, {
-        operationName: "userProfile",
-        query: userProfileQuery
-      })
+        operationName: 'userProfile',
+        query: userProfileQuery,
+      }),
     ).catch(err => {
-      expect(err.message).toEqual("Missing variable 'id'");
-    });
-  });
+      expect(err.message).toEqual("Missing variable 'id'")
+    })
+  })
 
-  it("can load relations with the provider arguments", async () => {
-    expect.assertions(1);
+  it('can load relations with the provider arguments', async () => {
+    expect.assertions(1)
 
-    fetchMock.get("/users/2", {
-      id: "2",
-      login: "Jochen"
-    });
+    fetchMock.get('/users/2', {
+      id: '2',
+      login: 'Jochen',
+    })
 
-    fetchMock.get("/users/2/friends", [
+    fetchMock.get('/users/2/friends', [
       {
-        id: "1",
-        login: "Peter"
+        id: '1',
+        login: 'Peter',
       },
       {
-        id: "3",
-        login: "Joachim"
-      }
-    ]);
+        id: '3',
+        login: 'Joachim',
+      },
+    ])
 
     const userProfileQuery = gql`
       query userProfile($id: ID!) {
@@ -142,36 +142,36 @@ describe("Query", () => {
           }
         }
       }
-    `;
+    `
 
-    const link = createRestLink();
+    const link = createRestLink()
 
     const data = await makePromise(
       execute(link, {
-        operationName: "userProfile",
+        operationName: 'userProfile',
         query: userProfileQuery,
-        variables: { id: 2 }
-      })
-    );
+        variables: { id: 2 },
+      }),
+    )
 
     expect(data).toEqual({
       userProfile: {
-        __typename: "User",
-        id: "2",
-        login: "Jochen",
+        __typename: 'User',
+        id: '2',
+        login: 'Jochen',
         friends: [
           {
-            __typename: "User",
-            id: "1",
-            login: "Peter"
+            __typename: 'User',
+            id: '1',
+            login: 'Peter',
           },
           {
-            __typename: "User",
-            id: "3",
-            login: "Joachim"
-          }
-        ]
-      }
-    });
-  });
-});
+            __typename: 'User',
+            id: '3',
+            login: 'Joachim',
+          },
+        ],
+      },
+    })
+  })
+})

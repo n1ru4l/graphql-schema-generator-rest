@@ -11,15 +11,19 @@
   },
   "lint-staged": {
     "*.js": [
-      "prettier --write",
+      "eslint --fix",
       "git add"
     ]
   },
   "devDependencies": {
     "babel-core": "^7.0.0-beta.3",
+    "babel-eslint": "^8.0.1",
     "babel-jest": "^21.2.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "eslint": "^4.9.0",
+    "eslint-plugin-jest": "^21.2.0",
+    "eslint-plugin-prettier": "^2.3.1",
     "fetch-mock": "^5.13.1",
     "graphql": "^0.11.7",
     "graphql-tag": "^2.5.0",
