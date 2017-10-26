@@ -20,6 +20,7 @@ describe('Query', () => {
       query userProfile {
         userProfile(id: "1")
           @rest(type: "User", route: "/users/:id", params: { id: "1" }) {
+          __typename
           id
           login
         }
@@ -56,6 +57,7 @@ describe('Query', () => {
       query userProfile($id: ID!) {
         userProfile(id: $id)
           @rest(type: "User", route: "/users/:id", params: { id: $id }) {
+          __typename
           id
           login
         }
@@ -88,6 +90,7 @@ describe('Query', () => {
       query userProfile($id: ID!) {
         userProfile(id: $id)
           @rest(type: "User", route: "/users/:id", params: { id: $id }) {
+          __typename
           id
           login
         }
@@ -115,6 +118,7 @@ describe('Query', () => {
       query userProfile($id: ID!) {
         userProfile(id: $id)
           @rest(type: "User", route: "/users/:id", params: { id: $id }) {
+          __typename
           id
           login
         }
@@ -133,6 +137,42 @@ describe('Query', () => {
 
     expect(data).toEqual({
       userProfile: null,
+    })
+  })
+
+  it('removes unselected fields', async () => {
+    expect.assertions(1)
+
+    fetchMock.get('/users/2', {
+      id: '2',
+      login: 'Peter',
+    })
+
+    const userProfileQuery = gql`
+      query userProfile($id: ID!) {
+        userProfile(id: $id)
+          @rest(type: "User", route: "/users/:id", params: { id: $id }) {
+          __typename
+          id
+        }
+      }
+    `
+
+    const link = createRestLink()
+
+    const data = await makePromise(
+      execute(link, {
+        operationName: 'userProfile',
+        query: userProfileQuery,
+        variables: { id: '2' },
+      }),
+    )
+
+    expect(data).toEqual({
+      userProfile: {
+        __typename: 'User',
+        id: '2',
+      },
     })
   })
 
@@ -159,6 +199,7 @@ describe('Query', () => {
       query userProfile($id: ID!) {
         userProfile(id: $id)
           @rest(type: "User", route: "/users/:id", params: { id: $id }) {
+          __typename
           id
           login
           friends
@@ -167,6 +208,7 @@ describe('Query', () => {
               route: "/users/:userId/friends"
               provides: { userId: "id" }
             ) {
+            __typename
             id
             login
           }

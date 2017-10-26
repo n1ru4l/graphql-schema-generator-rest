@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "apollo-link": "^1.0.0"
+    "apollo-link": "^1.0.0",
+    "graphql-anywhere": "^4.0.0"
   },
   "scripts": {
     "precommit": "lint-staged",

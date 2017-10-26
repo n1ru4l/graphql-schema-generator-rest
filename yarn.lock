@@ -110,6 +110,10 @@ apollo-utilities@^0.2.0-beta.0:
   version "0.2.0-rc.3"
   resolved "https://registry.yarnpkg.com/apollo-utilities/-/apollo-utilities-0.2.0-rc.3.tgz#7bd93be0f587f20c5b46e21880272e305759fdc2"
 
+apollo-utilities@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/apollo-utilities/-/apollo-utilities-1.0.0.tgz#01b1a6aa60272a7d7cec18186ea379fe88156737"
+
 app-root-path@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/app-root-path/-/app-root-path-2.0.1.tgz#cd62dcf8e4fd5a417efc664d2e5b10653c651b46"
@@ -1688,6 +1692,12 @@ globby@^5.0.0:
 graceful-fs@^4.1.11, graceful-fs@^4.1.2:
   version "4.1.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
+
+graphql-anywhere@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/graphql-anywhere/-/graphql-anywhere-4.0.0.tgz#4cf7ae7ed93aabeb95d329caa08c3867ddaef45e"
+  dependencies:
+    apollo-utilities "^1.0.0"
 
 graphql-tag@^2.5.0:
   version "2.5.0"
