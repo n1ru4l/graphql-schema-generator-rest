@@ -11,7 +11,7 @@
   },
   "lint-staged": {
     "*.js": ["eslint --fix", "git add"],
-    ".json": ["prettier --write", "git add"]
+    "*.json": ["prettier --write", "git add"]
   },
   "jest": {
     "modulePathIgnorePatterns": ["\\..*\\.js$"]
