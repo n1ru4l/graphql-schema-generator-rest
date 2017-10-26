@@ -14,7 +14,7 @@ query userProfile($id: ID!) {
     friends @rest(
       type: "User"
       route: "/users/:userId/friends"
-      provides: { userId: "id" }
+      provides: { userId: "id" } # map id from parent object to :userId route param
     ) {
       id
       login
