@@ -20,6 +20,7 @@
   "jest": {
     "modulePathIgnorePatterns": ["\\..*\\.js$"]
   },
+  "files": ["dist", "README.md"],
   "devDependencies": {
     "babel-core": "^7.0.0-beta.3",
     "babel-eslint": "^8.0.1",
