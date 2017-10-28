@@ -3,11 +3,11 @@ import babel from 'rollup-plugin-babel'
 export default {
   input: `src/index.js`,
   output: {
-    file: `dist/main.js`,
+    file: `dist/module.js`,
     format: `es`,
   },
   sourceMap: true,
-  moduleName: `errorLink`,
+  moduleName: `apolloRestLink`,
   exports: `named`,
   onwarn,
   plugins: [
