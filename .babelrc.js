@@ -1,15 +1,18 @@
-"use strict";
+'use strict'
 
 module.exports = {
   presets: [
     [
-      "env",
+      'env',
       {
         targets: {
-          node: "current"
-        }
-      }
-    ]
+          node: 'current',
+        },
+      },
+    ],
   ],
-  plugins: [["transform-object-rest-spread", { useBuiltIns: true }]]
-};
+  plugins: [
+    ['transform-object-rest-spread', { useBuiltIns: true }],
+    `transform-export-extensions`,
+  ],
+}
