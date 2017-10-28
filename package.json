@@ -5,7 +5,8 @@
   "license": "MIT",
   "dependencies": {
     "apollo-link": "^1.0.0",
-    "graphql-anywhere": "^4.0.0"
+    "graphql-anywhere": "^4.0.0",
+    "graphql-tools": "^2.6.1"
   },
   "scripts": {
     "precommit": "lint-staged",
