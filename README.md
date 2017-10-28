@@ -80,7 +80,7 @@ type User {
 }
 
 type Query {
-  user(id: ID!): User @rest(route: "/users/:id", params: { id: "id" })
+  user(id: ID!): User @rest(route: "/users/:id")
 }
 ```
 
@@ -102,7 +102,7 @@ const typeDefs = `
   }
 
   type Query {
-    user(id: ID!): User @rest(route: "/users/:id", params: { id: "id" })
+    user(id: ID!): User @rest(route: "/users/:id")
   }
 `
 
