@@ -160,13 +160,15 @@ describe(`General`, () => {
   })
 
   it(`handles a post request with params`, async () => {
-    expect.assertions(1)
+    expect.assertions(2)
 
     fetchMock.post('/increment-counter', (url, opts) => {
       const data = JSON.parse(opts.body)
       expect(data).toEqual({
         counter: 10,
       })
+
+      return JSON.stringify(10)
     })
 
     const schema = generateRestSchema({ typeDefs })
@@ -176,6 +178,11 @@ describe(`General`, () => {
       }
     `
 
-    return graphql(schema, mutation)
+    const data = await graphql(schema, mutation)
+    expect(data).toEqual({
+      data: {
+        setCounter: 10,
+      },
+    })
   })
 })
