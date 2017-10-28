@@ -28,7 +28,7 @@ const getProvideMappings = (restDirective, objectTypeDefinition) => {
   )
   if (!arg) return []
   if (arg.value.kind !== `ObjectValue`)
-    throw new Error(`Provides params must be an object.`)
+    throw new Error(`Provides argument must be an object.`)
 
   return arg.value.fields.map(field => {
     const parentField = objectTypeDefinition.fields.find(
@@ -49,6 +49,25 @@ const getArgumentMappings = (restDirective, args) => {
   }))
 }
 
+const getBodyMappings = (restDirective, args) => {
+  const arg = restDirective.arguments.find(
+    arg => arg.kind === `Argument` && arg.name.value === `body`,
+  )
+  if (!arg) return []
+  if (arg.value.kind !== `ObjectValue`)
+    throw new Error(`Body argument must be an object.`)
+  return arg.value.fields.map(field => {
+    const argumentName = field.value.value
+    const bodyName = field.name.value
+    const argumentField = args.find(arg => arg.name.value === argumentName)
+    if (!argumentField) throw new Error(`Missing argument '${argumentName}'`)
+    return {
+      argumentField: argumentName,
+      bodyField: bodyName,
+    }
+  })
+}
+
 const parseParams = url =>
   url
     .split('/')
@@ -66,6 +85,14 @@ const getArgumentsValues = (argumentMappings, args) =>
     name: routeParam,
     value: args[argName],
   }))
+
+const getBodyValues = (bodyMappings, args) =>
+  Object.assign(
+    {},
+    ...bodyMappings.map(({ argumentField, bodyField }) => ({
+      [bodyField]: args[argumentField],
+    })),
+  )
 
 const checkRequiredParams = (requiredParams, params) =>
   requiredParams.forEach(requiredParam => {
@@ -93,6 +120,12 @@ const createFieldResolver = (field, objectTypeDefinition, fetcher) => {
     objectTypeDefinition,
   )
   const argumentMappings = getArgumentMappings(restDirective, args)
+  const bodyMappings = getBodyMappings(restDirective, args)
+
+  if (method === `GET` && bodyMappings.length)
+    throw new Error(
+      `Resolver with method 'GET' should not have any body mappings.`,
+    )
 
   const resolver = (parentObject, args) => {
     const params = [
@@ -102,9 +135,15 @@ const createFieldResolver = (field, objectTypeDefinition, fetcher) => {
     checkRequiredParams(requiredParams, params)
     const generatedRoute = generateRouteWithParams(route, params)
 
-    return fetcher(generatedRoute, { method }).then(
-      response => (response.ok ? response.json() : null),
-    )
+    let body = undefined
+    if (bodyMappings.length) {
+      body = JSON.stringify(getBodyValues(bodyMappings, args))
+    }
+
+    return fetcher(generatedRoute, {
+      method,
+      body,
+    }).then(response => (response.ok ? response.json() : null))
   }
 
   return { [fieldName]: resolver }

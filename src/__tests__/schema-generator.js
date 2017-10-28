@@ -22,6 +22,11 @@ const typeDefs = `
       route: "/increment-counter"
       method: "POST"
     )
+    setCounter(value: Int!): Int @rest(
+      route: "/increment-counter"
+      method: "POST"
+      body: { counter: "value" }
+    )
   }
 `
 
@@ -152,5 +157,25 @@ describe(`General`, () => {
         incrementCounter: 1,
       },
     })
+  })
+
+  it(`handles a post request with params`, async () => {
+    expect.assertions(1)
+
+    fetchMock.post('/increment-counter', (url, opts) => {
+      const data = JSON.parse(opts.body)
+      expect(data).toEqual({
+        counter: 10,
+      })
+    })
+
+    const schema = generateRestSchema({ typeDefs })
+    const mutation = `
+      mutation setCounter {
+        setCounter(value: 10)
+      }
+    `
+
+    return graphql(schema, mutation)
   })
 })
