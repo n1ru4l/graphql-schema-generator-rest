@@ -1,5 +1,7 @@
 # Experimental Apollo Rest Link Implementation
 
+[![CircleCI](https://circleci.com/gh/n1ru4l/apollo-link-rest.svg?style=svg)](https://circleci.com/gh/n1ru4l/apollo-link-rest)
+
 This is just me experimenting with GraphQL AST stuff.
 
 If you have ideas or want to contribute feel free to open issues or pull requests 😊
