@@ -1,6 +1,6 @@
 {
   "name": "@n1ru4l/apollo-link-rest",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "main": "dist/main.js",
   "license": "MIT",
   "dependencies": {
