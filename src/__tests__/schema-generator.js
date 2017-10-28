@@ -14,7 +14,7 @@ const typeDefs = `
   }
 
   type Query {
-    user(id: ID!): User @rest(route: "/users/:id", params: { id: "id" })
+    user(id: ID!): User @rest(route: "/users/:id")
   }
 `
 
@@ -118,7 +118,7 @@ describe(`General`, () => {
       }
   
       type Query {
-        user(id: ID!): User @rest(route: "/users/:id", params: { id: "id" })
+        user(id: ID!): User @rest(route: "/users/:id")
       }
     `
 
