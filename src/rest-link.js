@@ -1,4 +1,5 @@
 import { ApolloLink, Observable } from 'apollo-link'
+
 import { filter } from 'graphql-anywhere'
 
 const getRestDirective = field =>
@@ -170,7 +171,7 @@ export const createRestLink = ({ fetcher } = {}) => {
 
       processSelectionSet(selectionSet, fetcher, variables, {})
         .then(result => {
-          observer.next(filter(operation.query, result))
+          observer.next({ data: filter(operation.query, result) })
           observer.complete()
         })
         .catch(err => {
