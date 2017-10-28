@@ -1,7 +1,7 @@
 {
-  "name": "apollo-link-rest",
+  "name": "@n1ru4l/apollo-link-rest",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/main.js",
   "license": "MIT",
   "dependencies": {
     "apollo-link": "^1.0.0",
@@ -10,7 +10,8 @@
   },
   "scripts": {
     "precommit": "lint-staged",
-    "test": "jest"
+    "test": "jest",
+    "build": "cross-env NODE_ENV=BUILD rollup -c"
   },
   "lint-staged": {
     "*.js": ["eslint --fix", "git add"],
@@ -26,6 +27,7 @@
     "babel-plugin-transform-export-extensions": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "cross-env": "^5.1.1",
     "eslint": "^4.9.0",
     "eslint-plugin-jest": "^21.2.0",
     "eslint-plugin-prettier": "^2.3.1",
@@ -35,6 +37,9 @@
     "husky": "^0.14.3",
     "jest": "^21.2.1",
     "lint-staged": "^4.3.0",
-    "prettier": "^1.7.4"
+    "prettier": "^1.7.4",
+    "rollup": "^0.50.0",
+    "rollup-plugin-babel":
+      "https://github.com/Andarist/rollup-plugin-babel.git#fix/external-helpers-babel-7"
   }
 }

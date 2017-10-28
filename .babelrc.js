@@ -8,6 +8,7 @@ module.exports = {
         targets: {
           node: 'current',
         },
+        modules: (process.NODE_ENV = `BUILD` ? false : undefined),
       },
     ],
   ],
