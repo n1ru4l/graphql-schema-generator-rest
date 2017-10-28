@@ -89,7 +89,7 @@ type Query {
 ### Usage
 
 ```javascript
-import { generateSchema } from 'apollo-rest-link'
+import { generateRestSchema } from 'apollo-rest-link'
 import { graphql } from 'graphql'
 
 const typeDefs = `
@@ -108,7 +108,7 @@ const typeDefs = `
   }
 `
 
-const schema = generateSchema({ typeDefs })
+const schema = generateRestSchema({ typeDefs })
 
 const query = `
   query user {
