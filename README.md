@@ -127,12 +127,8 @@ const query = `
   }
 `
 graphql(schema, query)
-  .then(result => {
-    console.log(result)
-  })
-  .catch(err => {
-    console.log(err)
-  })
+  .then(console.log)
+  .catch(console.log)
 ```
 
 # Tests

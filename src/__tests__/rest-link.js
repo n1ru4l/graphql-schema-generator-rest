@@ -37,10 +37,12 @@ describe('Query', () => {
     )
 
     expect(data).toEqual({
-      userProfile: {
-        __typename: 'User',
-        id: '1',
-        login: 'Peter',
+      data: {
+        userProfile: {
+          __typename: 'User',
+          id: '1',
+          login: 'Peter',
+        },
       },
     })
   })
@@ -75,10 +77,12 @@ describe('Query', () => {
     )
 
     expect(data).toEqual({
-      userProfile: {
-        __typename: 'User',
-        id: '2',
-        login: 'Jochen',
+      data: {
+        userProfile: {
+          __typename: 'User',
+          id: '2',
+          login: 'Jochen',
+        },
       },
     })
   })
@@ -136,7 +140,9 @@ describe('Query', () => {
     )
 
     expect(data).toEqual({
-      userProfile: null,
+      data: {
+        userProfile: null,
+      },
     })
   })
 
@@ -169,9 +175,11 @@ describe('Query', () => {
     )
 
     expect(data).toEqual({
-      userProfile: {
-        __typename: 'User',
-        id: '2',
+      data: {
+        userProfile: {
+          __typename: 'User',
+          id: '2',
+        },
       },
     })
   })
@@ -227,22 +235,24 @@ describe('Query', () => {
     )
 
     expect(data).toEqual({
-      userProfile: {
-        __typename: 'User',
-        id: '2',
-        login: 'Jochen',
-        friends: [
-          {
-            __typename: 'User',
-            id: '1',
-            login: 'Peter',
-          },
-          {
-            __typename: 'User',
-            id: '3',
-            login: 'Joachim',
-          },
-        ],
+      data: {
+        userProfile: {
+          __typename: 'User',
+          id: '2',
+          login: 'Jochen',
+          friends: [
+            {
+              __typename: 'User',
+              id: '1',
+              login: 'Peter',
+            },
+            {
+              __typename: 'User',
+              id: '3',
+              login: 'Joachim',
+            },
+          ],
+        },
       },
     })
   })
