@@ -11,12 +11,23 @@ const typeDefs = `
     friends: [User]!
       @rest(
         route: "/users/:userId/friends"
-        provides: { userId: "id" } # map id from parent object to :userId route param
+        method: "GET"
+        provides: { userId: "id" }
       )
   }
 
   type Query {
-    user(id: ID!): User @rest(route: "/users/:id")
+    user(id: ID!): User @rest(
+      route: "/users/:id"
+      method: "GET"
+    )
+  }
+
+  type Mutation {
+    incrementCounter: Int @rest(
+      route: "/increment-counter"
+      method: "POST"
+    )
   }
 `
 
@@ -41,6 +52,7 @@ describe(`General`, async () => {
         login: 'Joachim',
       },
     ])
+
     const schema = generateRestSchema({ typeDefs })
     const link = createSchemaLink({ schema })
 

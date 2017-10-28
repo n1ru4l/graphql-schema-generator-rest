@@ -9,12 +9,19 @@ const typeDefs = `
     friends: [User]!
       @rest(
         route: "/users/:userId/friends"
-        provides: { userId: "id" } # map id from parent object to :userId route param
+        provides: { userId: "id" }
       )
   }
 
   type Query {
     user(id: ID!): User @rest(route: "/users/:id")
+  }
+
+  type Mutation {
+    incrementCounter: Int @rest(
+      route: "/increment-counter"
+      method: "POST"
+    )
   }
 `
 
@@ -125,5 +132,25 @@ describe(`General`, () => {
     expect(() => {
       generateRestSchema({ typeDefs })
     }).toThrow(`Missing field 'userId'`)
+  })
+
+  it(`handles a method param on the @rest directive`, async () => {
+    expect.assertions(1)
+
+    fetchMock.post('/increment-counter', `1`)
+
+    const schema = generateRestSchema({ typeDefs })
+    const mutation = `
+      mutation incrementCounter {
+        incrementCounter
+      }
+    `
+
+    const result = await graphql(schema, mutation)
+    expect(result).toEqual({
+      data: {
+        incrementCounter: 1,
+      },
+    })
   })
 })

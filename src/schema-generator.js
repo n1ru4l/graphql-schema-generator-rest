@@ -14,6 +14,14 @@ const getRoute = restDirective => {
   return arg.value.value
 }
 
+const getMethod = restDirective => {
+  const arg = restDirective.arguments.find(
+    arg => arg.kind === `Argument` && arg.name.value === `method`,
+  )
+  if (!arg || arg.value.kind !== `StringValue`) return undefined
+  return arg.value.value
+}
+
 const getProvideMappings = (restDirective, objectTypeDefinition) => {
   const arg = restDirective.arguments.find(
     arg => arg.kind === `Argument` && arg.name.value === `provides`,
@@ -77,6 +85,7 @@ const createFieldResolver = (field, objectTypeDefinition, fetcher) => {
   if (!restDirective) return { [fieldName]: createPropResolver(fieldName) }
   const route = getRoute(restDirective)
   if (!route) throw new Error(`Missing route argument.`)
+  const method = getMethod(restDirective) || `GET`
 
   const requiredParams = parseParams(route)
   const providesMappings = getProvideMappings(
@@ -93,10 +102,9 @@ const createFieldResolver = (field, objectTypeDefinition, fetcher) => {
     checkRequiredParams(requiredParams, params)
     const generatedRoute = generateRouteWithParams(route, params)
 
-    return fetcher(generatedRoute, { method: `GET` }).then(response => {
-      if (!response.ok) return null
-      return response.json()
-    })
+    return fetcher(generatedRoute, { method }).then(
+      response => (response.ok ? response.json() : null),
+    )
   }
 
   return { [fieldName]: resolver }

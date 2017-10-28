@@ -8,16 +8,13 @@ export const createSchemaLink = ({ schema }) =>
       new Observable(observer => {
         const { operationName, variables, query } = operation
 
-        graphql(
-          schema,
-          print(query),
-          {},
-          {},
-          variables,
-          operationName,
-        ).then(result => {
-          observer.next(result)
-          observer.complete()
-        })
+        graphql(schema, print(query), {}, {}, variables, operationName)
+          .then(result => {
+            observer.next(result)
+            observer.complete()
+          })
+          .catch(err => {
+            observer.error(err)
+          })
       }),
   )
