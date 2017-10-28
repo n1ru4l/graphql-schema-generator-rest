@@ -91,6 +91,7 @@ type Query {
 ```javascript
 import { generateRestSchema } from 'apollo-rest-link'
 import { graphql } from 'graphql'
+import fetch from 'node-fetch'
 
 const typeDefs = `
   type User {
@@ -108,7 +109,10 @@ const typeDefs = `
   }
 `
 
-const schema = generateRestSchema({ typeDefs })
+const schema = generateRestSchema({
+  typeDefs,
+  fetcher: fetch,
+})
 
 const query = `
   query user {
@@ -122,7 +126,13 @@ const query = `
     }
   }
 `
-const result = await graphql(schema, query)
+graphql(schema, query)
+  .then(result => {
+    console.log(result)
+  })
+  .catch(err => {
+    console.log(err)
+  })
 ```
 
 # Tests

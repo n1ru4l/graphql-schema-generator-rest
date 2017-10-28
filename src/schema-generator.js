@@ -71,7 +71,7 @@ const generateRouteWithParams = (route, params) =>
     route,
   )
 
-const createFieldResolver = (field, objectTypeDefinition) => {
+const createFieldResolver = (field, objectTypeDefinition, fetcher) => {
   const { arguments: args, name: { value: fieldName } } = field
   const restDirective = getRestDirective(field)
   if (!restDirective) return { [fieldName]: createPropResolver(fieldName) }
@@ -93,8 +93,8 @@ const createFieldResolver = (field, objectTypeDefinition) => {
     checkRequiredParams(requiredParams, params)
     const generatedRoute = generateRouteWithParams(route, params)
 
-    return fetch(generatedRoute, { method: 'GET' }).then(response => {
-      if (!response.ok) return undefined
+    return fetcher(generatedRoute, { method: `GET` }).then(response => {
+      if (!response.ok) return null
       return response.json()
     })
   }
@@ -102,27 +102,31 @@ const createFieldResolver = (field, objectTypeDefinition) => {
   return { [fieldName]: resolver }
 }
 
-const createObjectTypeResolver = objectTypeDefinition => {
+const createObjectTypeResolver = (objectTypeDefinition, fetcher) => {
   const { fields, name: { value: typeName } } = objectTypeDefinition
 
   const fieldResolvers = fields.map(field =>
-    createFieldResolver(field, objectTypeDefinition),
+    createFieldResolver(field, objectTypeDefinition, fetcher),
   )
   return { [typeName]: Object.assign({}, ...fieldResolvers) }
 }
 
-export const createResolvers = schemaAST => {
+export const createResolvers = ({ schemaAST, fetcher }) => {
   const { definitions } = schemaAST
   const objectTypeDefinitions = definitions.filter(
     definition => definition.kind === `ObjectTypeDefinition`,
   )
 
-  const resolverParts = objectTypeDefinitions.map(createObjectTypeResolver)
+  const resolverParts = objectTypeDefinitions.map(objectTypeDefinition =>
+    createObjectTypeResolver(objectTypeDefinition, fetcher),
+  )
   return Object.assign({}, ...resolverParts)
 }
 
-export const generateRestSchema = ({ typeDefs }) => {
+export const generateRestSchema = ({ typeDefs, fetcher }) => {
+  if (!fetcher) fetcher = fetch
+
   const schemaAST = gql`${typeDefs}`
-  const resolvers = createResolvers(schemaAST)
+  const resolvers = createResolvers({ schemaAST, fetcher })
   return makeExecutableSchema({ typeDefs, resolvers })
 }
