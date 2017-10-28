@@ -9,7 +9,7 @@ If you have ideas or want to contribute feel free to open issues or pull request
 ## Rest Schema Generator
 
 Generate an executable Schema from typeDefs annotated with `@rest` directives
- This can be used by apollo-server or a future apollo-rest-link that will follow soon :)
+ This can be used by apollo-server or a schema link.
 
 ### Example Schema
 
