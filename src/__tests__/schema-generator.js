@@ -19,6 +19,16 @@ const typeDefs = `
       route: "/color/:id"
       mapper: "ColorMapper"
     )
+    colors(
+      first: Int!
+      after: ID
+    ): [Color]! @rest(
+      route: "/colors"
+      query: {
+        first: "first"
+        after: "after"
+      }
+    )
   }
 
   type Color {
@@ -229,6 +239,47 @@ describe(`General`, () => {
           id: `red`,
           name: `red`,
         },
+      },
+    })
+  })
+
+  it(`supports query params`, async () => {
+    expect.assertions(1)
+
+    fetchMock.get(`/colors?first=2`, [
+      {
+        id: `red`,
+        name: `red`,
+      },
+      {
+        id: `blue`,
+        name: `blue`,
+      },
+    ])
+
+    const schema = createRestSchema()
+    const query = `
+      query colors {
+        colors(first: 2) {
+          id
+          name
+        }
+      }
+    `
+
+    const data = await graphql(schema, query)
+    expect(data).toEqual({
+      data: {
+        colors: [
+          {
+            id: `red`,
+            name: `red`,
+          },
+          {
+            id: `blue`,
+            name: `blue`,
+          },
+        ],
       },
     })
   })
