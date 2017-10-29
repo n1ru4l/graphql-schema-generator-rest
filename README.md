@@ -2,9 +2,15 @@
 
 [![CircleCI](https://circleci.com/gh/n1ru4l/apollo-link-rest.svg?style=svg)](https://circleci.com/gh/n1ru4l/apollo-link-rest)
 
-This is just me experimenting with GraphQL AST stuff.
+Demo: https://codesandbox.io/s/5yknn3jjzp
 
 If you have ideas or want to contribute feel free to open issues or pull requests 😊
+
+## Install
+
+```shell
+yarn add @n1ru4l/apollo-link-rest
+```
 
 ## Rest Schema Generator
 

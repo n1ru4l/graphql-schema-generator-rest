@@ -1,16 +1,22 @@
 {
-  "name": "apollo-link-rest",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "@n1ru4l/apollo-link-rest",
+  "version": "0.1.8",
+  "module": "./dist/index.js",
+  "main": "./dist/bundle.umd.js",
   "license": "MIT",
   "dependencies": {
     "apollo-link": "^1.0.0",
     "graphql-anywhere": "^4.0.0",
+    "graphql-tag": "^2.5.0",
     "graphql-tools": "^2.6.1"
   },
   "scripts": {
     "precommit": "lint-staged",
-    "test": "jest"
+    "test": "jest",
+    "prebuild": "rimraf dist/*",
+    "build":
+      "cross-env NODE_ENV=BUILD babel src --out-dir dist --ignore src/__tests__",
+    "postbuild": "cross-env NODE_ENV=BUILD rollup -c"
   },
   "lint-staged": {
     "*.js": ["eslint --fix", "git add"],
@@ -19,22 +25,29 @@
   "jest": {
     "modulePathIgnorePatterns": ["\\..*\\.js$"]
   },
+  "files": ["dist", "README.md", "package.json"],
   "devDependencies": {
+    "babel-cli": "^7.0.0-beta.3",
     "babel-core": "^7.0.0-beta.3",
     "babel-eslint": "^8.0.1",
     "babel-jest": "^21.2.0",
     "babel-plugin-transform-export-extensions": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "cross-env": "^5.1.1",
     "eslint": "^4.9.0",
     "eslint-plugin-jest": "^21.2.0",
     "eslint-plugin-prettier": "^2.3.1",
     "fetch-mock": "^5.13.1",
     "graphql": "^0.11.7",
-    "graphql-tag": "^2.5.0",
     "husky": "^0.14.3",
     "jest": "^21.2.1",
     "lint-staged": "^4.3.0",
-    "prettier": "^1.7.4"
+    "prettier": "^1.7.4",
+    "rimraf": "^2.6.2",
+    "rollup": "^0.50.0"
+  },
+  "peerDependencies": {
+    "graphql": "^0.11.7"
   }
 }
