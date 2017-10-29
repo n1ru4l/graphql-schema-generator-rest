@@ -1,5 +1,3 @@
-// import babel from 'rollup-plugin-babel'
-
 export default {
   input: `dist/index.js`,
   output: {

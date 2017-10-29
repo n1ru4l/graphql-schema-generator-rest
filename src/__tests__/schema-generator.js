@@ -15,6 +15,15 @@ const typeDefs = `
 
   type Query {
     user(id: ID!): User @rest(route: "/users/:id")
+    color(id: ID!): Color @rest(
+      route: "/color/:id"
+      mapper: "ColorMapper"
+    )
+  }
+
+  type Color {
+    id: ID!
+    name: String!
   }
 
   type Mutation {
@@ -30,6 +39,13 @@ const typeDefs = `
   }
 `
 
+const mappers = {
+  ColorMapper: payload => payload.data,
+}
+
+const createRestSchema = (opts = {}) =>
+  generateRestSchema({ typeDefs, mappers, ...opts })
+
 describe(`General`, () => {
   afterEach(() => {
     fetchMock.restore()
@@ -42,7 +58,7 @@ describe(`General`, () => {
       login: 'Peter',
     })
 
-    const schema = generateRestSchema({ typeDefs })
+    const schema = createRestSchema()
 
     const query = `
       query user {
@@ -82,7 +98,7 @@ describe(`General`, () => {
       },
     ])
 
-    const schema = generateRestSchema({ typeDefs })
+    const schema = createRestSchema()
 
     const query = `
       query user {
@@ -144,7 +160,7 @@ describe(`General`, () => {
 
     fetchMock.post('/increment-counter', `1`)
 
-    const schema = generateRestSchema({ typeDefs })
+    const schema = createRestSchema()
     const mutation = `
       mutation incrementCounter {
         incrementCounter
@@ -171,7 +187,7 @@ describe(`General`, () => {
       return JSON.stringify(10)
     })
 
-    const schema = generateRestSchema({ typeDefs })
+    const schema = createRestSchema()
     const mutation = `
       mutation setCounter {
         setCounter(value: 10)
@@ -182,6 +198,37 @@ describe(`General`, () => {
     expect(data).toEqual({
       data: {
         setCounter: 10,
+      },
+    })
+  })
+
+  it(`supports a body mapper`, async () => {
+    expect.assertions(1)
+
+    fetchMock.get(`/color/red`, {
+      data: {
+        id: 'red',
+        name: 'red',
+      },
+    })
+
+    const schema = createRestSchema()
+    const query = `
+      query color {
+        color(id: "red") {
+          id
+          name
+        }
+      }
+    `
+
+    const data = await graphql(schema, query)
+    expect(data).toEqual({
+      data: {
+        color: {
+          id: `red`,
+          name: `red`,
+        },
       },
     })
   })
