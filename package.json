@@ -1,6 +1,6 @@
 {
   "name": "@n1ru4l/apollo-link-rest",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "module": "./dist/index.js",
   "main": "./dist/bundle.umd.js",
   "license": "MIT",
