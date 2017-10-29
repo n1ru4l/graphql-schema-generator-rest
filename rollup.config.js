@@ -1,20 +1,15 @@
-import babel from 'rollup-plugin-babel'
+// import babel from 'rollup-plugin-babel'
 
 export default {
-  input: `src/index.js`,
+  input: `dist/index.js`,
   output: {
-    file: `dist/module.js`,
-    format: `es`,
+    file: `dist/bundle.umd.js`,
+    format: `umd`,
   },
-  sourceMap: true,
-  moduleName: `apolloRestLink`,
+  sourcemap: true,
+  name: `restLink`,
   exports: `named`,
   onwarn,
-  plugins: [
-    babel({
-      exclude: 'node_modules/**',
-    }),
-  ],
 }
 
 function onwarn(message) {
