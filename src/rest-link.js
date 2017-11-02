@@ -3,7 +3,7 @@ import { ApolloLink, Observable } from 'apollo-link'
 import { filter } from 'graphql-anywhere'
 
 const getRestDirective = field =>
-  field.directives.find(directive => directive.name.value === 'rest')
+  field.directives ? field.directives.find(directive => directive.name.value === 'rest') : null;
 
 const findRestDirectiveFields = selectionSet =>
   selectionSet.selections.filter(getRestDirective)
