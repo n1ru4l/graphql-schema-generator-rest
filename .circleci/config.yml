@@ -34,13 +34,7 @@ jobs:
       - checkout
       - run: yarn install
       - run: yarn build
-      - run: npx semantic-release pre
-      - run: yarn prepare-for-release
-      - run: cd dist
-      - run: npm publish --access public
-      - run: cd ..
-      - run: npx semantic-release post
-
+      - run: npx semantic-release pre && yarn prepare-for-release && cd dist && npm publish --access public && cd .. && npx semantic-release post || true
 workflows:
   version: 2
   build-deploy:
