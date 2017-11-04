@@ -23,7 +23,8 @@
     "graphql-tools": "^2.6.1"
   },
   "scripts": {
-    "commit": "git-cz",
+    "cm": "git-cz",
+    "precommit": "lint-staged",
     "test": "jest",
     "prebuild": "rimraf lib/*",
     "build": "babel src --out-dir lib --ignore src/__tests__",
@@ -45,7 +46,6 @@
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.1",
     "babel-jest": "^21.2.0",
-    "babel-plugin-transform-export-extensions": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "copy-pkg": "^1.0.0",
