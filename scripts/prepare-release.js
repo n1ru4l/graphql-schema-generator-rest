@@ -20,11 +20,9 @@ copyPkg.sync(path.join(rootDir, `package.json`), `dist/package.json`, {
     `author`,
     `repository`,
     `bugs`,
-    `bugs`,
     `module`,
     `main`,
     `dependencies`,
-    `peerDependencies`,
   ],
 })
 
