@@ -14,10 +14,10 @@
   "keywords": ["graphql"],
   "repository": {
     "type": "git",
-    "url": "https://github.com/n1ru4l/apollo-link-rest"
+    "url": "https://github.com/n1ru4l/graphql-schema-generator-rest.git"
   },
   "bugs": {
-    "url": "https://github.com/n1ru4l/downshift/apollo-link-rest"
+    "url": "https://github.com/n1ru4l/graphql-schema-generator-rest"
   },
   "dependencies": {
     "graphql-tools": "^2.6.1"

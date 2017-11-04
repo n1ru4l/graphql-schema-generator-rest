@@ -184,3 +184,19 @@ app.listen(PORT)
 ```shell
 yarn test
 ```
+
+## Contribute
+
+### Checkout project
+
+For contributions please fork this repository.
+
+```bash
+git clone https://github.com/<your-login>/graphql-schema-generator-rest.git
+cd graphql-schema-generator-rest
+yarn install
+```
+
+### Commiting Changes
+
+Please use `yarn cm` for commiting changes to git.
