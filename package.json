@@ -1,5 +1,5 @@
 {
-  "name": "@n1ru4l/graphql-rest-schema-generator",
+  "name": "graphql-rest-schema-generator",
   "version": "0.0.0-development",
   "description":
     "A graphql schema generator for directive annotated type definitions",
