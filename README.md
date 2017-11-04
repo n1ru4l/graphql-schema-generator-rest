@@ -1,7 +1,7 @@
 # Rest GraphQL Schema Generator
 
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
-[![CircleCI](https://circleci.com/gh/n1ru4l/graphql-schema-generator-rest.svg?style=svg)](https://circleci.com/gh/n1ru4l/apollo-link-rest)
+[![CircleCI](https://circleci.com/gh/n1ru4l/graphql-schema-generator-rest.svg?style=svg)](https://circleci.com/gh/n1ru4l/graphql-schema-generator-rest)
 
 This package provides the functionality of generating a GraphQL schema from type definitions annotated with `@rest` directives.
 
