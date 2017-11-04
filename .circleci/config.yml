@@ -33,7 +33,7 @@ jobs:
       - run: yarn install
       - run: yarn test
       - run: yarn build
-      - run: npx semantic-release pre && yarn prepare-for-release && yarn publish ./dist --access public && npx semantic-release post || true
+      - run: npx semantic-release pre && yarn prepare-for-release && npm publish ./dist --access public && npx semantic-release post || true
 workflows:
   version: 2
   build-deploy:
