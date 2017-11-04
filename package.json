@@ -1,6 +1,8 @@
 {
   "name": "@n1ru4l/graphql-rest-schema-generator",
-  "version": "0.2.0",
+  "version": "0.0.0-development",
+  "description":
+    "A graphql schema generator for directive annotated type definitions",
   "module": "./lib/schema-generator.js",
   "main": "./lib/bundle.umd.js",
   "license": "MIT",
@@ -9,19 +11,26 @@
     "name": "Laurin Quast",
     "url": "https://github.com/n1ru4l"
   },
+  "keywords": ["graphql"],
   "repository": {
     "type": "git",
     "url": "https://github.com/n1ru4l/apollo-link-rest"
+  },
+  "bugs": {
+    "url": "https://github.com/n1ru4l/downshift/apollo-link-rest"
   },
   "dependencies": {
     "graphql-tools": "^2.6.1"
   },
   "scripts": {
-    "precommit": "lint-staged",
+    "commit": "git-cz",
     "test": "jest",
     "prebuild": "rimraf lib/*",
     "build": "babel src --out-dir lib --ignore src/__tests__",
-    "postbuild": "rollup -c"
+    "postbuild": "rollup -c",
+    "prepare-for-release": "babel-node scripts/prepare-release.js",
+    "semantic-release":
+      "semantic-release pre && npm publish && semantic-release post"
   },
   "lint-staged": {
     "*.js": ["eslint --fix", "git add"],
@@ -41,6 +50,7 @@
     "babel-preset-env": "^1.6.1",
     "copy-pkg": "^1.0.0",
     "cross-env": "^5.1.1",
+    "cz-conventional-changelog": "^2.1.0",
     "eslint": "^4.9.0",
     "eslint-plugin-jest": "^21.2.0",
     "eslint-plugin-prettier": "^2.3.1",
@@ -53,9 +63,15 @@
     "lint-staged": "^4.3.0",
     "prettier": "^1.7.4",
     "rimraf": "^2.6.2",
-    "rollup": "^0.50.0"
+    "rollup": "^0.50.0",
+    "semantic-release": "^8.2.0"
   },
   "peerDependencies": {
     "graphql": "^0.11.7"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

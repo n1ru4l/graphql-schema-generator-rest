@@ -27,3 +27,8 @@ jobs:
         
       # run tests!
       - run: yarn test
+
+#deployment:
+#  master:
+#    branch: master
+#    commands: npx semantic-release
