@@ -9,13 +9,17 @@
     "name": "Laurin Quast",
     "url": "https://github.com/n1ru4l"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/n1ru4l/apollo-link-rest"
+  },
   "dependencies": {
     "graphql-tools": "^2.6.1"
   },
   "scripts": {
     "precommit": "lint-staged",
     "test": "jest",
-    "prebuild": "rimraf dist/*",
+    "prebuild": "rimraf lib/*",
     "build": "babel src --out-dir lib --ignore src/__tests__",
     "postbuild": "rollup -c"
   },
@@ -41,6 +45,7 @@
     "eslint-plugin-jest": "^21.2.0",
     "eslint-plugin-prettier": "^2.3.1",
     "fetch-mock": "^5.13.1",
+    "fs-extra": "^4.0.2",
     "graphql": "^0.11.7",
     "graphql-tag": "^2.5.0",
     "husky": "^0.14.3",
