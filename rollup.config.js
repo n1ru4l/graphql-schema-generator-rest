@@ -1,5 +1,5 @@
 export default {
-  input: `dist/index.js`,
+  input: `dist/schema-generator.js`,
   output: {
     file: `dist/bundle.umd.js`,
     format: `umd`,

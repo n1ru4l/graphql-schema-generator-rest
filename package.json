@@ -1,6 +1,6 @@
 {
-  "name": "@n1ru4l/apollo-link-rest",
-  "version": "0.1.9",
+  "name": "@n1ru4l/graphql-rest-schema-generator",
+  "version": "0.2.0",
   "module": "./dist/schema-generator.js",
   "main": "./dist/bundle.umd.js",
   "license": "MIT",
@@ -24,8 +24,8 @@
   },
   "files": ["dist", "README.md", "package.json"],
   "devDependencies": {
-    "babel-cli": "^7.0.0-beta.3",
-    "babel-core": "^7.0.0-beta.3",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.1",
     "babel-jest": "^21.2.0",
     "babel-plugin-transform-export-extensions": "^6.22.0",
@@ -36,6 +36,7 @@
     "eslint-plugin-jest": "^21.2.0",
     "eslint-plugin-prettier": "^2.3.1",
     "fetch-mock": "^5.13.1",
+    "graphql": "^0.11.7",
     "graphql-tag": "^2.5.0",
     "husky": "^0.14.3",
     "jest": "^21.2.1",
