@@ -1,13 +1,10 @@
 {
   "name": "@n1ru4l/apollo-link-rest",
   "version": "0.1.9",
-  "module": "./dist/index.js",
+  "module": "./dist/schema-generator.js",
   "main": "./dist/bundle.umd.js",
   "license": "MIT",
   "dependencies": {
-    "apollo-link": "^1.0.0",
-    "graphql-anywhere": "^4.0.0",
-    "graphql-tag": "^2.5.0",
     "graphql-tools": "^2.6.1"
   },
   "scripts": {
@@ -23,7 +20,7 @@
     "*.json": ["prettier --write", "git add"]
   },
   "jest": {
-    "modulePathIgnorePatterns": ["\\..*\\.js$"]
+    "testMatch": ["**/src/__tests__/*.test.js"]
   },
   "files": ["dist", "README.md", "package.json"],
   "devDependencies": {
@@ -39,7 +36,7 @@
     "eslint-plugin-jest": "^21.2.0",
     "eslint-plugin-prettier": "^2.3.1",
     "fetch-mock": "^5.13.1",
-    "graphql": "^0.11.7",
+    "graphql-tag": "^2.5.0",
     "husky": "^0.14.3",
     "jest": "^21.2.1",
     "lint-staged": "^4.3.0",

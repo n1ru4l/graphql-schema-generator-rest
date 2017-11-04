@@ -1,4 +1,3 @@
-import gql from 'graphql-tag'
 import { makeExecutableSchema } from 'graphql-tools'
 
 const createPropResolver = prop => x => x[prop]
@@ -207,8 +206,8 @@ const createObjectTypeResolver = (objectTypeDefinition, fetcher, mappers) => {
   return { [typeName]: Object.assign({}, ...fieldResolvers) }
 }
 
-export const createResolvers = ({ schemaAST, fetcher, mappers }) => {
-  const { definitions } = schemaAST
+export const createResolvers = ({ typeDefs, fetcher, mappers }) => {
+  const { definitions } = typeDefs
   const objectTypeDefinitions = definitions.filter(
     definition => definition.kind === `ObjectTypeDefinition`,
   )
@@ -222,7 +221,6 @@ export const createResolvers = ({ schemaAST, fetcher, mappers }) => {
 export const generateRestSchema = ({ typeDefs, fetcher, mappers = {} }) => {
   if (!fetcher) fetcher = fetch
 
-  const schemaAST = gql`${typeDefs}`
-  const resolvers = createResolvers({ schemaAST, fetcher, mappers })
+  const resolvers = createResolvers({ typeDefs, fetcher, mappers })
   return makeExecutableSchema({ typeDefs, resolvers })
 }

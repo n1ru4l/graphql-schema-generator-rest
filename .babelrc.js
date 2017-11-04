@@ -13,8 +13,5 @@ module.exports = {
       },
     ],
   ],
-  plugins: [
-    `transform-export-extensions`,
-    ['transform-object-rest-spread', { useBuiltIns: true }],
-  ],
+  plugins: [['transform-object-rest-spread', { useBuiltIns: true }]],
 }
