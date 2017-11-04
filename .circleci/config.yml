@@ -39,7 +39,7 @@ jobs:
       - run: cd dist
       - run: npm publish --access public
       - run: cd ..
-      - run: yarn semantic-release post
+      - run: npx semantic-release post
 
 workflows:
   version: 2
@@ -51,4 +51,4 @@ workflows:
             - build-job
           filters:
             branches:
-              only: schema-generator
+              only: master
