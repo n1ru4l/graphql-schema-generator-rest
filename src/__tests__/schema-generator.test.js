@@ -1,34 +1,21 @@
 import { generateRestSchema } from '../schema-generator'
 import fetchMock from 'fetch-mock'
 import { graphql } from 'graphql'
+import gql from 'graphql-tag'
 
-const typeDefs = `
+const typeDefs = gql`
   type User {
     id: ID!
     login: String!
     friends: [User]!
-      @rest(
-        route: "/users/:userId/friends"
-        provides: { userId: "id" }
-      )
+      @rest(route: "/users/:userId/friends", provides: { userId: "id" })
   }
 
   type Query {
     user(id: ID!): User @rest(route: "/users/:id")
-    color(id: ID!): Color @rest(
-      route: "/color/:id"
-      mapper: "ColorMapper"
-    )
-    colors(
-      first: Int!
-      after: ID
-    ): [Color]! @rest(
-      route: "/colors"
-      query: {
-        first: "first"
-        after: "after"
-      }
-    )
+    color(id: ID!): Color @rest(route: "/color/:id", mapper: "ColorMapper")
+    colors(first: Int!, after: ID): [Color]!
+      @rest(route: "/colors", query: { first: "first", after: "after" })
   }
 
   type Color {
@@ -37,15 +24,13 @@ const typeDefs = `
   }
 
   type Mutation {
-    incrementCounter: Int @rest(
-      route: "/increment-counter"
-      method: "POST"
-    )
-    setCounter(value: Int!): Int @rest(
-      route: "/increment-counter"
-      method: "POST"
-      body: { counter: "value" }
-    )
+    incrementCounter: Int @rest(route: "/increment-counter", method: "POST")
+    setCounter(value: Int!): Int
+      @rest(
+        route: "/increment-counter"
+        method: "POST"
+        body: { counter: "value" }
+      )
   }
 `
 
@@ -57,18 +42,15 @@ const createRestSchema = (opts = {}) =>
   generateRestSchema({ typeDefs, mappers, ...opts })
 
 describe(`General`, () => {
-  afterEach(() => {
-    fetchMock.restore()
-  })
   it(`Can generate resolvers`, async () => {
     expect.assertions(1)
 
-    fetchMock.get('/users/1', {
+    const fetcher = fetchMock.sandbox().get('/users/1', {
       id: '1',
       login: 'Peter',
     })
 
-    const schema = createRestSchema()
+    const schema = createRestSchema({ fetcher })
 
     const query = `
       query user {
@@ -92,23 +74,24 @@ describe(`General`, () => {
   it(`Can generate nested resolvers`, async () => {
     expect.assertions(1)
 
-    fetchMock.get('/users/2', {
-      id: '2',
-      login: 'Jochen',
-    })
+    const fetcher = fetchMock
+      .sandbox()
+      .get('/users/2', {
+        id: '2',
+        login: 'Jochen',
+      })
+      .get('/users/2/friends', [
+        {
+          id: '1',
+          login: 'Peter',
+        },
+        {
+          id: '3',
+          login: 'Joachim',
+        },
+      ])
 
-    fetchMock.get('/users/2/friends', [
-      {
-        id: '1',
-        login: 'Peter',
-      },
-      {
-        id: '3',
-        login: 'Joachim',
-      },
-    ])
-
-    const schema = createRestSchema()
+    const schema = createRestSchema({ fetcher })
 
     const query = `
       query user {
@@ -144,7 +127,9 @@ describe(`General`, () => {
   })
 
   it(`throws if there is a incorrect provides mapping`, async () => {
-    const typeDefs = `
+    const fetcher = fetchMock.sandbox()
+
+    const typeDefs = gql`
       type User {
         id: ID!
         login: String!
@@ -154,23 +139,23 @@ describe(`General`, () => {
             provides: { userId: "id1" } # map id from parent object to :userId route param
           )
       }
-  
+
       type Query {
         user(id: ID!): User @rest(route: "/users/:id")
       }
     `
 
     expect(() => {
-      generateRestSchema({ typeDefs })
+      generateRestSchema({ typeDefs, fetcher })
     }).toThrow(`Missing field 'userId'`)
   })
 
   it(`handles a method param on the @rest directive`, async () => {
     expect.assertions(1)
 
-    fetchMock.post('/increment-counter', `1`)
+    const fetcher = fetchMock.sandbox().post('/increment-counter', `1`)
 
-    const schema = createRestSchema()
+    const schema = createRestSchema({ fetcher })
     const mutation = `
       mutation incrementCounter {
         incrementCounter
@@ -188,16 +173,18 @@ describe(`General`, () => {
   it(`handles a post request with params`, async () => {
     expect.assertions(2)
 
-    fetchMock.post('/increment-counter', (url, opts) => {
-      const data = JSON.parse(opts.body)
-      expect(data).toEqual({
-        counter: 10,
+    const fetcher = fetchMock
+      .sandbox()
+      .post('/increment-counter', (url, opts) => {
+        const data = JSON.parse(opts.body)
+        expect(data).toEqual({
+          counter: 10,
+        })
+
+        return JSON.stringify(10)
       })
 
-      return JSON.stringify(10)
-    })
-
-    const schema = createRestSchema()
+    const schema = createRestSchema({ fetcher })
     const mutation = `
       mutation setCounter {
         setCounter(value: 10)
@@ -215,14 +202,14 @@ describe(`General`, () => {
   it(`supports a body mapper`, async () => {
     expect.assertions(1)
 
-    fetchMock.get(`/color/red`, {
+    const fetcher = fetchMock.sandbox().get(`/color/red`, {
       data: {
         id: 'red',
         name: 'red',
       },
     })
 
-    const schema = createRestSchema()
+    const schema = createRestSchema({ fetcher })
     const query = `
       query color {
         color(id: "red") {
@@ -246,7 +233,7 @@ describe(`General`, () => {
   it(`supports query params`, async () => {
     expect.assertions(1)
 
-    fetchMock.get(`/colors?first=2`, [
+    const fetcher = fetchMock.sandbox().get(`/colors?first=2`, [
       {
         id: `red`,
         name: `red`,
@@ -257,7 +244,7 @@ describe(`General`, () => {
       },
     ])
 
-    const schema = createRestSchema()
+    const schema = createRestSchema({ fetcher })
     const query = `
       query colors {
         colors(first: 2) {

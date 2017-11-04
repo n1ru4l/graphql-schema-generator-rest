@@ -4,9 +4,9 @@
 #
 version: 2
 jobs:
-  build:
+  build-job:
     docker:
-      - image: circleci/node:7.10
+      - image: circleci/node:8.9.0
 
     working_directory: ~/repo
     steps:
@@ -24,6 +24,31 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-        
-      # run tests!
       - run: yarn test
+
+  deploy-job:
+    docker:
+      - image: circleci/node:8.9.0
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run: yarn install
+      - run: yarn build
+      - run: npx semantic-release pre
+      - run: yarn prepare-for-release
+      - run: cd dist
+      - run: npm publish --access public
+      - run: cd ..
+      - run: npx semantic-release post
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build-job
+      - deploy-job:
+          requires:
+            - build-job
+          filters:
+            branches:
+              only: master

@@ -1,53 +1,82 @@
 {
-  "name": "@n1ru4l/apollo-link-rest",
-  "version": "0.1.9",
-  "module": "./dist/index.js",
-  "main": "./dist/bundle.umd.js",
+  "name": "@n1ru4l/graphql-schema-generator-rest",
+  "version": "0.0.0-semantically-released",
+  "description":
+    "A graphql schema generator for directive annotated type definitions",
+  "module": "./lib/schema-generator.js",
+  "main": "./lib/bundle.umd.js",
   "license": "MIT",
+  "author": {
+    "email": "laurinquast@googlemail.com",
+    "name": "Laurin Quast",
+    "url": "https://github.com/n1ru4l"
+  },
+  "keywords": ["graphql"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/n1ru4l/apollo-link-rest"
+  },
+  "bugs": {
+    "url": "https://github.com/n1ru4l/downshift/apollo-link-rest"
+  },
   "dependencies": {
-    "apollo-link": "^1.0.0",
-    "graphql-anywhere": "^4.0.0",
-    "graphql-tag": "^2.5.0",
     "graphql-tools": "^2.6.1"
   },
   "scripts": {
+    "cm": "git-cz",
     "precommit": "lint-staged",
     "test": "jest",
-    "prebuild": "rimraf dist/*",
-    "build":
-      "cross-env NODE_ENV=BUILD babel src --out-dir dist --ignore src/__tests__",
-    "postbuild": "cross-env NODE_ENV=BUILD rollup -c"
+    "prebuild": "rimraf lib/*",
+    "build": "babel src --out-dir lib --ignore src/__tests__",
+    "postbuild": "rollup -c",
+    "prepare-for-release": "babel-node scripts/prepare-release.js",
+    "semantic-release":
+      "semantic-release pre && npm publish && semantic-release post"
   },
   "lint-staged": {
     "*.js": ["eslint --fix", "git add"],
     "*.json": ["prettier --write", "git add"]
   },
   "jest": {
-    "modulePathIgnorePatterns": ["\\..*\\.js$"]
+    "testMatch": ["**/src/__tests__/*.test.js"]
   },
-  "files": ["dist", "README.md", "package.json"],
+  "files": ["lib", "README.md", "LICENSE"],
   "devDependencies": {
-    "babel-cli": "^7.0.0-beta.3",
-    "babel-core": "^7.0.0-beta.3",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.1",
     "babel-jest": "^21.2.0",
-    "babel-plugin-transform-export-extensions": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "condition-circle": "^1.5.0",
+    "copy-pkg": "^1.0.0",
     "cross-env": "^5.1.1",
+    "cz-conventional-changelog": "^2.1.0",
     "eslint": "^4.9.0",
     "eslint-plugin-jest": "^21.2.0",
     "eslint-plugin-prettier": "^2.3.1",
     "fetch-mock": "^5.13.1",
+    "fs-extra": "^4.0.2",
     "graphql": "^0.11.7",
+    "graphql-tag": "^2.5.0",
     "husky": "^0.14.3",
     "jest": "^21.2.1",
     "lint-staged": "^4.3.0",
     "prettier": "^1.7.4",
     "rimraf": "^2.6.2",
-    "rollup": "^0.50.0"
+    "rollup": "^0.50.0",
+    "semantic-release": "^8.2.0"
   },
   "peerDependencies": {
     "graphql": "^0.11.7"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "release": {
+    "verifyConditions": "condition-circle",
+    "branch": "master"
   }
 }
