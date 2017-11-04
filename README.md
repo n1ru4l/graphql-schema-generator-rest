@@ -1,7 +1,9 @@
 # Rest GraphQL Schema Generator
 
-[![CircleCI](https://circleci.com/gh/n1ru4l/apollo-link-rest.svg?style=svg)](https://circleci.com/gh/n1ru4l/apollo-link-rest)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![CircleCI](https://circleci.com/gh/n1ru4l/apollo-link-rest.svg?style=svg)](https://circleci.com/gh/n1ru4l/apollo-link-rest)
+
+This package provides the functionality of generating a GraphQL schema from type definitions annotated with `@rest` directives.
 
 ## Install
 
@@ -9,9 +11,7 @@
 yarn add @n1ru4l/graphql-schema-generator-rest
 ```
 
-## Rest Schema Generator
-
-Generate an executable Schema from GraphQL type definitions annotated with `@rest` directives. 
+## Usage
 
 ### Type Definitions
 
@@ -78,9 +78,9 @@ graphql(schema, query)
   .catch(console.log)
 ```
 
-### Recipies
+## Recipies
 
-#### apollo-link
+### apollo-link
 
 ```javascript
 import { generateRestSchema } from '@n1ru4l/graphql-schema-generator-rest'
@@ -140,7 +140,7 @@ makePromise(execute(link, { operationName: `userProfile`, query }))
   .catch(console.log)
 ```
 
-#### express
+### express
 
 ```javascript
 import express from 'express'
@@ -179,7 +179,7 @@ app.use('/graphql', bodyParser.json(), graphqlExpress({ schema }))
 app.listen(PORT)
 ```
 
-# Tests
+## Tests
 
 ```shell
 yarn test
