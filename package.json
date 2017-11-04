@@ -1,9 +1,14 @@
 {
   "name": "@n1ru4l/graphql-rest-schema-generator",
   "version": "0.2.0",
-  "module": "./dist/schema-generator.js",
-  "main": "./dist/bundle.umd.js",
+  "module": "./lib/schema-generator.js",
+  "main": "./lib/bundle.umd.js",
   "license": "MIT",
+  "author": {
+    "email": "laurinquast@googlemail.com",
+    "name": "Laurin Quast",
+    "url": "https://github.com/n1ru4l"
+  },
   "dependencies": {
     "graphql-tools": "^2.6.1"
   },
@@ -11,9 +16,8 @@
     "precommit": "lint-staged",
     "test": "jest",
     "prebuild": "rimraf dist/*",
-    "build":
-      "cross-env NODE_ENV=BUILD babel src --out-dir dist --ignore src/__tests__",
-    "postbuild": "cross-env NODE_ENV=BUILD rollup -c"
+    "build": "babel src --out-dir lib --ignore src/__tests__",
+    "postbuild": "rollup -c"
   },
   "lint-staged": {
     "*.js": ["eslint --fix", "git add"],
@@ -22,7 +26,7 @@
   "jest": {
     "testMatch": ["**/src/__tests__/*.test.js"]
   },
-  "files": ["dist", "README.md", "package.json"],
+  "files": ["lib", "README.md", "LICENSE"],
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
@@ -31,6 +35,7 @@
     "babel-plugin-transform-export-extensions": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "copy-pkg": "^1.0.0",
     "cross-env": "^5.1.1",
     "eslint": "^4.9.0",
     "eslint-plugin-jest": "^21.2.0",

@@ -1,7 +1,7 @@
 export default {
-  input: `dist/schema-generator.js`,
+  input: `lib/schema-generator.js`,
   output: {
-    file: `dist/bundle.umd.js`,
+    file: `lib/bundle.umd.js`,
     format: `umd`,
   },
   sourcemap: true,

@@ -1,7 +1,10 @@
 # OSX
 #
 .DS_Store
+
+# Build
 dist
+lib
 
 # node.js
 #
