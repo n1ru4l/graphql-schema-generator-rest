@@ -6,14 +6,14 @@
 ## Install
 
 ```shell
-yarn add @n1ru4l/apollo-link-rest
+yarn add @n1ru4l/graphql-schema-generator-rest
 ```
 
 ## Rest Schema Generator
 
 Generate an executable Schema from GraphQL type definitions annotated with `@rest` directives. 
 
-### Example Schema
+### Type Definitions
 
 ```graphql
 type User {
@@ -34,11 +34,12 @@ type Query {
 ### Creating a schema
 
 ```javascript
-import { generateRestSchema } from 'apollo-rest-link'
+import { generateRestSchema } from '@n1ru4l/graphql-schema-generator-rest'
 import { graphql } from 'graphql'
+import gql from 'graphql-tag'
 import fetch from 'node-fetch'
 
-const typeDefs = `
+const typeDefs = gql`
   type User {
     id: ID!
     login: String!
@@ -82,13 +83,13 @@ graphql(schema, query)
 #### apollo-link
 
 ```javascript
-import { generateRestSchema } from 'apollo-rest-link'
+import { generateRestSchema } from '@n1ru4l/graphql-schema-generator-rest'
 import { Observable, ApolloLink } from 'apollo-link'
 import { graphql, print } from 'graphql'
 import gql from 'graphql-tag'
 import fetch from 'node-fetch'
 
-const typeDefs = `
+const typeDefs = gql`
   type User {
     id: ID!
     login: String!
@@ -144,10 +145,12 @@ makePromise(execute(link, { operationName: `userProfile`, query }))
 ```javascript
 import express from 'express'
 import bodyParser from 'body-parser'
+import { generateRestSchema } from '@n1ru4l/graphql-schema-generator-rest'
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
+import gql from 'graphql-tag'
 import fetch from 'node-fetch'
 
-const typeDefs = `
+const typeDefs = gql`
   type User {
     id: ID!
     login: String!
