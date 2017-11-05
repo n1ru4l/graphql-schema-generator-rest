@@ -14,6 +14,8 @@ yarn add @n1ru4l/graphql-schema-generator-rest
 
 ## Usage
 
+[Check out the examples!](https://github.com/n1ru4l/graphql-schema-generator-rest/tree/master/examples)
+
 ### Type Definitions
 
 ```graphql
