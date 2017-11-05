@@ -16,6 +16,7 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
+    "concurrently": "^3.5.0",
     "nodemon": "^1.12.1"
   },
   "private": true,
@@ -23,12 +24,10 @@
     "@n1ru4l/graphql-schema-generator-rest": "^1.1.0",
     "apollo-server-express": "^1.2.0",
     "body-parser": "^1.18.2",
-    "concurrently": "^3.5.0",
     "express": "^4.16.2",
     "faker": "^4.1.0",
     "graphql": "^0.11.7",
     "graphql-tag": "^2.5.0",
-    "json-server": "^0.12.1",
     "lodash": "^4.17.4",
     "morgan": "^1.9.0",
     "node-fetch": "^1.7.3"
