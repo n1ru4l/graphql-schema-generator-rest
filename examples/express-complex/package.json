@@ -1,0 +1,36 @@
+{
+  "name": "example-express",
+  "version": "0.0.1",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "start-rest-api": "babel-node src/rest-server.js",
+    "start-graphql-api": "babel-node src/graphql-server.js",
+    "start": "concurrently 'yarn start-rest-api' 'yarn start-graphql-api'",
+    "start-rest-api-dev": "nodemon --exec 'babel-node src/rest-server.js'",
+    "start-graphql-api-dev":
+      "nodemon --exec 'babel-node src/graphql-server.js'",
+    "dev": "concurrently 'yarn start-rest-api-dev' 'yarn start-graphql-api-dev'"
+  },
+  "author": "Laurin Quast <laurinquast@googlemail.com>",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "nodemon": "^1.12.1"
+  },
+  "private": true,
+  "dependencies": {
+    "@n1ru4l/graphql-schema-generator-rest": "^1.1.0",
+    "apollo-server-express": "^1.2.0",
+    "body-parser": "^1.18.2",
+    "concurrently": "^3.5.0",
+    "express": "^4.16.2",
+    "faker": "^4.1.0",
+    "graphql": "^0.11.7",
+    "graphql-tag": "^2.5.0",
+    "json-server": "^0.12.1",
+    "lodash": "^4.17.4",
+    "morgan": "^1.9.0",
+    "node-fetch": "^1.7.3"
+  }
+}
