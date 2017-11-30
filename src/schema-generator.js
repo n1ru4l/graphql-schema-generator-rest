@@ -97,9 +97,7 @@ const getMapper = (restDirective, bodyMappers) => {
 }
 
 const parseParams = url =>
-  url
-    .split(new RegExp('[?./=]'))
-    .filter(part => part.charAt(0) === ':')
+  (url.match(/:([a-zA-Z0-9]+)/g)||[])
     .map(part => part.substr(1))
 
 const getProvidesValues = (providesMappings, parentObject) =>
