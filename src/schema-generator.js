@@ -98,7 +98,7 @@ const getMapper = (restDirective, bodyMappers) => {
 
 const parseParams = url =>
   url
-    .split('/')
+    .split(new RegExp('[?./=]'))
     .filter(part => part.charAt(0) === ':')
     .map(part => part.substr(1))
 
