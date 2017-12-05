@@ -97,8 +97,7 @@ const getMapper = (restDirective, bodyMappers) => {
 }
 
 const parseParams = url =>
-  (url.match(/:([a-zA-Z0-9]+)/g)||[])
-    .map(part => part.substr(1))
+  (url.match(/:([a-zA-Z0-9]+)/g) || []).map(part => part.substr(1))
 
 const getProvidesValues = (providesMappings, parentObject) =>
   providesMappings.map(({ parentField, routeParam }) => ({
@@ -140,7 +139,10 @@ const generateQueryString = (queryMappings, params) =>
 
 const generateRouteWithParams = (route, params) =>
   params.reduce(
-    (route, param) => route.replace(`:${param.name}`, param.value),
+    (route, param) =>
+      typeof param.value !== `object`
+        ? route.replace(`:${param.name}`, param.value)
+        : route,
     route,
   )
 
