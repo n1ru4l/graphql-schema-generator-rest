@@ -23,6 +23,10 @@ const typeDefs = gql`
     name: String!
   }
 
+  input ColorInput {
+    name: String!
+  }
+
   type Mutation {
     incrementCounter: Int @rest(route: "/increment-counter", method: "POST")
     setCounter(value: Int!): Int
@@ -31,6 +35,8 @@ const typeDefs = gql`
         method: "POST"
         body: { counter: "value" }
       )
+    createColor(input: ColorInput!): Color
+      @rest(route: "/colors", method: "POST", body: { input: "input" })
   }
 `
 
@@ -195,6 +201,57 @@ describe(`General`, () => {
     expect(data).toEqual({
       data: {
         setCounter: 10,
+      },
+    })
+  })
+
+  it(`supports a mutation with an input type`, async () => {
+    expect.assertions(2)
+
+    const fetcher = fetchMock.sandbox().post('/colors', (url, opts) => {
+      const data = opts.body && JSON.parse(opts.body)
+      expect(data).toEqual({
+        input: {
+          name: 'yellow',
+        },
+      })
+
+      return JSON.stringify({
+        id: 'yellow',
+        name: 'yellow',
+      })
+    })
+
+    const schema = createRestSchema({ fetcher })
+
+    const mutation = `
+      mutation CreateColor($input: ColorInput!) {
+        createColor(input: $input) {
+          id
+          name
+        }
+      }
+    `
+    const variables = {
+      input: {
+        name: 'yellow',
+      },
+    }
+
+    const data = await graphql(
+      schema,
+      mutation,
+      undefined,
+      undefined,
+      variables,
+    )
+
+    expect(data).toEqual({
+      data: {
+        createColor: {
+          id: 'yellow',
+          name: 'yellow',
+        },
       },
     })
   })
