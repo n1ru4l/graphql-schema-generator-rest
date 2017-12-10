@@ -86,14 +86,14 @@ const getQueryMappings = (restDirective, args) => {
   })
 }
 
-const getMapper = (restDirective, bodyMappers) => {
+const getMapper = (restDirective, argName, mappers) => {
   const arg = restDirective.arguments.find(
-    arg => arg.kind === `Argument` && arg.name.value === `mapper`,
+    arg => arg.kind === `Argument` && arg.name.value === argName,
   )
-  if (!arg) return body => body
-  const bodyMapper = bodyMappers[arg.value.value]
-  if (!bodyMapper) throw new Error(`Missing mapper '${arg.value.value}'`)
-  return bodyMapper
+  if (!arg) return _ => _
+  const mapper = mappers[arg.value.value]
+  if (!mapper) throw new Error(`Missing mapper '${arg.value.value}'`)
+  return mapper
 }
 
 const parseParams = url =>
@@ -146,7 +146,14 @@ const generateRouteWithParams = (route, params) =>
     route,
   )
 
-const createFieldResolver = (field, objectTypeDefinition, fetcher, mappers) => {
+const createFieldResolver = (
+  field,
+  objectTypeDefinition,
+  fetcher,
+  {
+    responseMappers = {},
+  },
+) => {
   const { arguments: args, name: { value: fieldName } } = field
   const restDirective = getRestDirective(field)
   if (!restDirective) return { [fieldName]: createPropResolver(fieldName) }
@@ -162,7 +169,8 @@ const createFieldResolver = (field, objectTypeDefinition, fetcher, mappers) => {
   const argumentMappings = getArgumentMappings(restDirective, args)
   const bodyMappings = getBodyMappings(restDirective, args)
   const queryMappings = getQueryMappings(restDirective, args)
-  const mapper = getMapper(restDirective, mappers)
+  const responseMapper =
+    getMapper(restDirective, `responseMapper`, responseMappers)
 
   if (method === `GET` && bodyMappings.length)
     throw new Error(
@@ -191,7 +199,7 @@ const createFieldResolver = (field, objectTypeDefinition, fetcher, mappers) => {
       body,
     })
       .then(response => (response.ok ? response.json() : null))
-      .then(data => (data ? mapper(data) : data))
+      .then(data => (data ? responseMapper(data) : data))
   }
 
   return { [fieldName]: resolver }
@@ -206,7 +214,7 @@ const createObjectTypeResolver = (objectTypeDefinition, fetcher, mappers) => {
   return { [typeName]: Object.assign({}, ...fieldResolvers) }
 }
 
-export const createResolvers = ({ typeDefs, fetcher, mappers }) => {
+export const createResolvers = ({ typeDefs, fetcher, ...mappers }) => {
   const { definitions } = typeDefs
   const objectTypeDefinitions = definitions.filter(
     definition => definition.kind === `ObjectTypeDefinition`,
@@ -218,9 +226,9 @@ export const createResolvers = ({ typeDefs, fetcher, mappers }) => {
   return Object.assign({}, ...resolverParts)
 }
 
-export const generateRestSchema = ({ typeDefs, fetcher, mappers = {} }) => {
+export const generateRestSchema = ({ typeDefs, fetcher, ...mappers }) => {
   if (!fetcher) fetcher = fetch
 
-  const resolvers = createResolvers({ typeDefs, fetcher, mappers })
+  const resolvers = createResolvers({ typeDefs, fetcher, ...mappers })
   return makeExecutableSchema({ typeDefs, resolvers })
 }
