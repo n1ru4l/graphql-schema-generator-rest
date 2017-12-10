@@ -13,7 +13,8 @@ const typeDefs = gql`
 
   type Query {
     user(id: ID!): User @rest(route: "/users/:id")
-    color(id: ID!): Color @rest(route: "/color/:id", mapper: "ColorMapper")
+    color(id: ID!): Color
+      @rest(route: "/color/:id", responseMapper: "ColorMapper")
     colors(first: Int!, after: ID): [Color]!
       @rest(route: "/colors", query: { first: "first", after: "after" })
   }
@@ -40,12 +41,12 @@ const typeDefs = gql`
   }
 `
 
-const mappers = {
+const responseMappers = {
   ColorMapper: payload => payload.data,
 }
 
 const createRestSchema = (opts = {}) =>
-  generateRestSchema({ typeDefs, mappers, ...opts })
+  generateRestSchema({ typeDefs, responseMappers, ...opts })
 
 describe(`General`, () => {
   it(`Can generate resolvers`, async () => {
@@ -256,7 +257,7 @@ describe(`General`, () => {
     })
   })
 
-  it(`supports a body mapper`, async () => {
+  it(`supports a response mapper`, async () => {
     expect.assertions(1)
 
     const fetcher = fetchMock.sandbox().get(`/color/red`, {
