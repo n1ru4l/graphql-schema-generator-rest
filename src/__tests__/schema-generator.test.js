@@ -38,15 +38,26 @@ const typeDefs = gql`
       )
     createColor(input: ColorInput!): Color
       @rest(route: "/colors", method: "POST", body: { input: "input" })
+    createColorWithMapper(input: ColorInput!): Color
+      @rest(
+        route: "/colors",
+        method: "POST",
+        body: { input: "input" },
+        requestMapper: "ColorMapper"
+      )
   }
 `
+
+const requestMappers = {
+  ColorMapper: body => ({ appellation: body.input.name })
+}
 
 const responseMappers = {
   ColorMapper: payload => payload.data,
 }
 
 const createRestSchema = (opts = {}) =>
-  generateRestSchema({ typeDefs, responseMappers, ...opts })
+  generateRestSchema({ typeDefs, requestMappers, responseMappers, ...opts })
 
 describe(`General`, () => {
   it(`Can generate resolvers`, async () => {
@@ -233,6 +244,7 @@ describe(`General`, () => {
         }
       }
     `
+
     const variables = {
       input: {
         name: 'yellow',
@@ -250,6 +262,54 @@ describe(`General`, () => {
     expect(data).toEqual({
       data: {
         createColor: {
+          id: 'yellow',
+          name: 'yellow',
+        },
+      },
+    })
+  })
+
+  it(`supports a request mapper`, async () => {
+    expect.assertions(2)
+
+    const fetcher = fetchMock.sandbox().post(`/colors`, (url, opts) => {
+      const data = opts.body && JSON.parse(opts.body)
+      expect(data).toEqual({ appellation: 'yellow' })
+
+      return JSON.stringify({
+        id: 'yellow',
+        name: 'yellow',
+      })
+    })
+
+    const schema = createRestSchema({ fetcher })
+
+    const mutation = `
+      mutation CreateColorWithMapper($input: ColorInput!) {
+        createColorWithMapper(input: $input) {
+          id
+          name
+        }
+      }
+    `
+
+    const variables = {
+      input: {
+        name: 'yellow',
+      },
+    }
+
+    const data = await graphql(
+      schema,
+      mutation,
+      undefined,
+      undefined,
+      variables,
+    )
+
+    expect(data).toEqual({
+      data: {
+        createColorWithMapper: {
           id: 'yellow',
           name: 'yellow',
         },

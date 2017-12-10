@@ -151,6 +151,7 @@ const createFieldResolver = (
   objectTypeDefinition,
   fetcher,
   {
+    requestMappers = {},
     responseMappers = {},
   },
 ) => {
@@ -169,6 +170,8 @@ const createFieldResolver = (
   const argumentMappings = getArgumentMappings(restDirective, args)
   const bodyMappings = getBodyMappings(restDirective, args)
   const queryMappings = getQueryMappings(restDirective, args)
+  const requestMapper =
+    getMapper(restDirective, `requestMapper`, requestMappers)
   const responseMapper =
     getMapper(restDirective, `responseMapper`, responseMappers)
 
@@ -191,7 +194,7 @@ const createFieldResolver = (
 
     let body = undefined
     if (bodyMappings.length) {
-      body = JSON.stringify(getBodyValues(bodyMappings, params))
+      body = JSON.stringify(requestMapper(getBodyValues(bodyMappings, params)))
     }
 
     return fetcher(generatedRoute, {
