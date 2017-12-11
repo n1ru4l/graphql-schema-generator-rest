@@ -17,6 +17,12 @@ const typeDefs = gql`
       @rest(route: "/color/:id", responseMapper: "ColorMapper")
     colors(first: Int!, after: ID): [Color]!
       @rest(route: "/colors", query: { first: "first", after: "after" })
+    colorsWithMapper(first: Int!, after: ID): [Color]!
+      @rest(
+        route: "/colors",
+        query: { first: "first" },
+        queryMapper: "ColorMapper"
+      )
   }
 
   type Color {
@@ -48,6 +54,16 @@ const typeDefs = gql`
   }
 `
 
+const queryMappers = {
+  ColorMapper: (queryValues) =>
+    queryValues.map(({ queryField, queryValue }) => {
+      if (queryField === `first`) {
+        return { queryField, queryValue: queryValue + 2 }
+      }
+      return { queryField, queryValue }
+    })
+}
+
 const requestMappers = {
   ColorMapper: body => ({ appellation: body.input.name })
 }
@@ -57,7 +73,13 @@ const responseMappers = {
 }
 
 const createRestSchema = (opts = {}) =>
-  generateRestSchema({ typeDefs, requestMappers, responseMappers, ...opts })
+  generateRestSchema({
+    typeDefs,
+    queryMappers,
+    requestMappers,
+    responseMappers,
+    ...opts
+  })
 
 describe(`General`, () => {
   it(`Can generate resolvers`, async () => {
@@ -383,6 +405,39 @@ describe(`General`, () => {
           {
             id: `blue`,
             name: `blue`,
+          },
+        ],
+      },
+    })
+  })
+
+  it(`supports a query mapper`, async () => {
+    expect.assertions(1)
+
+    const fetcher = fetchMock.sandbox().get(`/colors?first=3`, [
+      {
+        id: `green`,
+        name: `green`,
+      },
+    ])
+
+    const schema = createRestSchema({ fetcher })
+    const query = `
+      query ColorsWithMapper {
+        colorsWithMapper(first: 1) {
+          id
+          name
+        }
+      }
+    `
+
+    const data = await graphql(schema, query)
+    expect(data).toEqual({
+      data: {
+        colorsWithMapper: [
+          {
+            id: `green`,
+            name: `green`,
           },
         ],
       },

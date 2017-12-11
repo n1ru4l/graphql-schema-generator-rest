@@ -86,6 +86,17 @@ const getQueryMappings = (restDirective, args) => {
   })
 }
 
+const getQueryValues = (queryMappings, params) =>
+  queryMappings
+    .reduce((acc, { queryField, paramName }) => {
+      const param = params.find(param => param.name === paramName)
+
+      if (param && param.value !== undefined) {
+        acc.push({ queryField, queryValue: param.value })
+      }
+      return acc
+    }, [])
+
 const getMapper = (restDirective, argName, mappers) => {
   const arg = restDirective.arguments.find(
     arg => arg.kind === `Argument` && arg.name.value === argName,
@@ -125,16 +136,11 @@ const checkRequiredParams = (requiredParams, params) =>
     if (!param) throw new Error(`Missing param '${requiredParam}'`)
   })
 
-const generateQueryString = (queryMappings, params) =>
-  queryMappings
-    .reduce(function(a, { queryField, paramName }) {
-      const param = params.find(param => param.name === paramName)
-
-      if (param && param.value != undefined) {
-        a.push(queryField + '=' + encodeURIComponent(param.value))
-      }
-      return a
-    }, [])
+const generateQueryString = (queryValues) =>
+  queryValues
+    .map(({ queryField, queryValue }) =>
+      queryField + '=' + encodeURIComponent(queryValue)
+    )
     .join('&')
 
 const generateRouteWithParams = (route, params) =>
@@ -151,6 +157,7 @@ const createFieldResolver = (
   objectTypeDefinition,
   fetcher,
   {
+    queryMappers = {},
     requestMappers = {},
     responseMappers = {},
   },
@@ -170,6 +177,8 @@ const createFieldResolver = (
   const argumentMappings = getArgumentMappings(restDirective, args)
   const bodyMappings = getBodyMappings(restDirective, args)
   const queryMappings = getQueryMappings(restDirective, args)
+  const queryMapper =
+    getMapper(restDirective, `queryMapper`, queryMappers)
   const requestMapper =
     getMapper(restDirective, `requestMapper`, requestMappers)
   const responseMapper =
@@ -187,7 +196,8 @@ const createFieldResolver = (
     ]
     checkRequiredParams(requiredParams, params)
     let generatedRoute = generateRouteWithParams(route, params)
-    let queryString = generateQueryString(queryMappings, params)
+    const queryValues = queryMapper(getQueryValues(queryMappings, params))
+    const queryString = generateQueryString(queryValues)
     if (queryString.length) {
       generatedRoute = `${generatedRoute}?${queryString}`
     }
