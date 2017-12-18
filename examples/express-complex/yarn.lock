@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@n1ru4l/graphql-schema-generator-rest@1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@n1ru4l/graphql-schema-generator-rest/-/graphql-schema-generator-rest-1.2.1.tgz#10fece219f5785567579c799bc6ee00496172429"
+"@n1ru4l/graphql-schema-generator-rest@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@n1ru4l/graphql-schema-generator-rest/-/graphql-schema-generator-rest-2.0.0.tgz#0ed9dbba479a0f85fb4521b4803632b069c48c0a"
   dependencies:
     graphql-tools "^2.6.1"
 
