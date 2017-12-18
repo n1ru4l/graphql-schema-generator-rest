@@ -87,15 +87,14 @@ const getQueryMappings = (restDirective, args) => {
 }
 
 const getQueryValues = (queryMappings, params) =>
-  queryMappings
-    .reduce((acc, { queryField, paramName }) => {
-      const param = params.find(param => param.name === paramName)
+  queryMappings.reduce((acc, { queryField, paramName }) => {
+    const param = params.find(param => param.name === paramName)
 
-      if (param && param.value !== undefined) {
-        acc.push({ queryField, queryValue: param.value })
-      }
-      return acc
-    }, [])
+    if (param && param.value !== undefined) {
+      acc.push({ queryField, queryValue: param.value })
+    }
+    return acc
+  }, [])
 
 const getMapper = (restDirective, argName, mappers) => {
   const arg = restDirective.arguments.find(
@@ -103,7 +102,7 @@ const getMapper = (restDirective, argName, mappers) => {
   )
   if (!arg) return _ => _
   const mapper = mappers[arg.value.value]
-  if (!mapper) throw new Error(`Missing mapper '${arg.value.value}'`)
+  if (!mapper) throw new Error(`Missing ${argName} '${arg.value.value}'.`)
   return mapper
 }
 
@@ -136,10 +135,11 @@ const checkRequiredParams = (requiredParams, params) =>
     if (!param) throw new Error(`Missing param '${requiredParam}'`)
   })
 
-const generateQueryString = (queryValues) =>
+const generateQueryString = queryValues =>
   queryValues
-    .map(({ queryField, queryValue }) =>
-      queryField + '=' + encodeURIComponent(queryValue)
+    .map(
+      ({ queryField, queryValue }) =>
+        queryField + '=' + encodeURIComponent(queryValue),
     )
     .join('&')
 
@@ -156,11 +156,7 @@ const createFieldResolver = (
   field,
   objectTypeDefinition,
   fetcher,
-  {
-    queryMappers = {},
-    requestMappers = {},
-    responseMappers = {},
-  },
+  { queryMappers = {}, requestMappers = {}, responseMappers = {} },
 ) => {
   const { arguments: args, name: { value: fieldName } } = field
   const restDirective = getRestDirective(field)
@@ -177,12 +173,17 @@ const createFieldResolver = (
   const argumentMappings = getArgumentMappings(restDirective, args)
   const bodyMappings = getBodyMappings(restDirective, args)
   const queryMappings = getQueryMappings(restDirective, args)
-  const queryMapper =
-    getMapper(restDirective, `queryMapper`, queryMappers)
-  const requestMapper =
-    getMapper(restDirective, `requestMapper`, requestMappers)
-  const responseMapper =
-    getMapper(restDirective, `responseMapper`, responseMappers)
+  const queryMapper = getMapper(restDirective, `queryMapper`, queryMappers)
+  const requestMapper = getMapper(
+    restDirective,
+    `requestMapper`,
+    requestMappers,
+  )
+  const responseMapper = getMapper(
+    restDirective,
+    `responseMapper`,
+    responseMappers,
+  )
 
   if (method === `GET` && bodyMappings.length)
     throw new Error(
