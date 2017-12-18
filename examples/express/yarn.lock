@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@n1ru4l/graphql-schema-generator-rest@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@n1ru4l/graphql-schema-generator-rest/-/graphql-schema-generator-rest-1.1.0.tgz#01198a216d8b82f69ca8446e986ed5391cb3e5a0"
+"@n1ru4l/graphql-schema-generator-rest@1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@n1ru4l/graphql-schema-generator-rest/-/graphql-schema-generator-rest-1.2.1.tgz#10fece219f5785567579c799bc6ee00496172429"
   dependencies:
     graphql-tools "^2.6.1"
 
@@ -47,24 +47,24 @@ apollo-cache-control@^0.0.x:
   dependencies:
     graphql-extensions "^0.0.x"
 
-apollo-server-core@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/apollo-server-core/-/apollo-server-core-1.2.0.tgz#e851c47444991b6f89f88529237076b83e01e8ee"
+apollo-server-core@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/apollo-server-core/-/apollo-server-core-1.3.1.tgz#fd25daf66b26f923a814f72d5d269c967e40aa1d"
   dependencies:
     apollo-cache-control "^0.0.x"
     apollo-tracing "^0.1.0"
     graphql-extensions "^0.0.x"
 
-apollo-server-express@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/apollo-server-express/-/apollo-server-express-1.2.0.tgz#026b12b453b8ecac6044b205b6a85fe596fb5f9e"
+apollo-server-express@1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/apollo-server-express/-/apollo-server-express-1.3.1.tgz#2427eb3b27ab34aa5f266628885e30bbf9f1ab5d"
   dependencies:
-    apollo-server-core "^1.2.0"
-    apollo-server-module-graphiql "^1.2.0"
+    apollo-server-core "^1.3.1"
+    apollo-server-module-graphiql "^1.3.0"
 
-apollo-server-module-graphiql@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/apollo-server-module-graphiql/-/apollo-server-module-graphiql-1.2.0.tgz#899d84f3b747795dbbfc8354aa51622ef038151c"
+apollo-server-module-graphiql@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/apollo-server-module-graphiql/-/apollo-server-module-graphiql-1.3.0.tgz#077bb8c7bf292f6128c6c96d59c2096445b084ef"
 
 apollo-tracing@^0.1.0:
   version "0.1.1"
@@ -133,7 +133,7 @@ aws4@^1.2.1:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.6.0.tgz#83ef5ca860b2b32e4a0deedee8c771b9db57471e"
 
-babel-cli@^6.26.0:
+babel-cli@6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-cli/-/babel-cli-6.26.0.tgz#502ab54874d7db88ad00b887a06383ce03d002f1"
   dependencies:
@@ -162,7 +162,7 @@ babel-code-frame@^6.26.0:
     esutils "^2.0.2"
     js-tokens "^3.0.2"
 
-babel-core@^6.26.0:
+babel-core@6.26.0, babel-core@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-core/-/babel-core-6.26.0.tgz#af32f78b31a6fcef119c87b0fd8d9753f03a0bb8"
   dependencies:
@@ -296,7 +296,7 @@ block-stream@*:
   dependencies:
     inherits "~2.0.0"
 
-body-parser@1.18.2, body-parser@^1.18.2:
+body-parser@1.18.2:
   version "1.18.2"
   resolved "https://registry.yarnpkg.com/body-parser/-/body-parser-1.18.2.tgz#87678a19d84b47d859b83199bd59bce222b10454"
   dependencies:
@@ -519,7 +519,7 @@ expand-range@^1.8.1:
   dependencies:
     fill-range "^2.1.0"
 
-express@^4.16.2:
+express@4.16.2:
   version "4.16.2"
   resolved "https://registry.yarnpkg.com/express/-/express-4.16.2.tgz#e35c6dfe2d64b7dca0a5cd4f21781be3299e076c"
   dependencies:
@@ -714,9 +714,9 @@ graphql-extensions@^0.0.x:
     core-js "^2.5.1"
     source-map-support "^0.5.0"
 
-graphql-tag@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.5.0.tgz#b43bfd8b5babcd2c205ad680c03e98b238934e0f"
+graphql-tag@2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.6.0.tgz#0fb1b9f6d6651263c47a3420e827910e6fed3952"
 
 graphql-tools@^2.6.1:
   version "2.7.2"
@@ -726,7 +726,7 @@ graphql-tools@^2.6.1:
     deprecated-decorator "^0.1.6"
     uuid "^3.1.0"
 
-graphql@^0.11.7:
+graphql@0.11.7:
   version "0.11.7"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-0.11.7.tgz#e5abaa9cb7b7cccb84e9f0836bf4370d268750c6"
   dependencies:
@@ -1052,7 +1052,7 @@ negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
 
-node-fetch@^1.7.3:
+node-fetch@1.7.3:
   version "1.7.3"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-1.7.3.tgz#980f6f72d85211a5347c6b2bc18c5b84c3eb47ef"
   dependencies:
