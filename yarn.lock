@@ -1142,9 +1142,9 @@ concat-stream@^1.5.2, concat-stream@^1.6.0:
     readable-stream "^2.2.2"
     typedarray "^0.0.6"
 
-condition-circle@1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/condition-circle/-/condition-circle-1.6.0.tgz#b90f8a05a87179b705e3abb0a9b94ffb0221b2e8"
+condition-circle@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/condition-circle/-/condition-circle-2.0.1.tgz#39cfd9eaa37985b5d7c5b5c538bf872f016b743c"
   dependencies:
     "@semantic-release/error" "2.1.0"
     cross-spawn "5.1.0"
