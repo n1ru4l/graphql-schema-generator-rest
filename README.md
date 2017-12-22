@@ -102,6 +102,7 @@ Available options for the `rest` directive:
 | **`queryMapper`**   | The identifier of a a queryMapper that maniplates the query mappings            |
 | **`body`**          | An object that maps fields to the request body                                  |
 | **`requestMapper`** | The identifier of a requestMapper that manipulates the request body             |
+| **`responseMapper`**| The identifier of a responseMapper that manipulates the response body returned by a request|
 
 ## Recipies
 
