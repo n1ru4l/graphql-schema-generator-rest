@@ -4214,9 +4214,9 @@ rimraf@2, rimraf@2.6.2, rimraf@^2.2.8, rimraf@^2.5.1, rimraf@^2.5.4, rimraf@^2.6
   dependencies:
     glob "^7.0.5"
 
-rollup@0.52.2:
-  version "0.52.2"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.52.2.tgz#d75bc6f37be02fd27cbb344e57e77b30042bd2cf"
+rollup@0.53.0:
+  version "0.53.0"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.53.0.tgz#7a3d5a04ba2b0a8f2405899fa6a0ac48da480ed1"
 
 run-async@^2.2.0:
   version "2.3.0"
