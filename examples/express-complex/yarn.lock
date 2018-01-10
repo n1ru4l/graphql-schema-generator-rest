@@ -1379,15 +1379,16 @@ node-pre-gyp@^0.6.36:
     tar "^2.2.1"
     tar-pack "^3.4.0"
 
-nodemon@1.14.3:
-  version "1.14.3"
-  resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-1.14.3.tgz#f08d66726fb9876d76956b57cc91624793de4dbb"
+nodemon@1.14.10:
+  version "1.14.10"
+  resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-1.14.10.tgz#836d33ff0f89ad111b8d49e5e3b3cb872e36304e"
   dependencies:
     chokidar "^1.7.0"
     debug "^2.6.8"
     ignore-by-default "^1.0.1"
     minimatch "^3.0.4"
     pstree.remy "^1.1.0"
+    semver "^5.4.1"
     touch "^3.1.0"
     undefsafe "0.0.3"
     update-notifier "^2.3.0"
@@ -1733,7 +1734,7 @@ semver-diff@^2.0.0:
   dependencies:
     semver "^5.0.3"
 
-semver@^5.0.3, semver@^5.1.0, semver@^5.3.0:
+semver@^5.0.3, semver@^5.1.0, semver@^5.3.0, semver@^5.4.1:
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.4.1.tgz#e059c09d8571f0540823733433505d3a2f00b18e"
 
