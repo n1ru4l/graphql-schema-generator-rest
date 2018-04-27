@@ -43,7 +43,7 @@
   "files": ["lib", "README.md", "LICENSE"],
   "devDependencies": {
     "babel-cli": "6.26.0",
-    "babel-core": "6.26.0",
+    "babel-core": "6.26.3",
     "babel-eslint": "8.2.3",
     "babel-jest": "22.4.3",
     "babel-plugin-transform-object-rest-spread": "6.26.0",
