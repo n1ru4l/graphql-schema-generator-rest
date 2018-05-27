@@ -53,7 +53,7 @@
     "cross-env": "5.1.6",
     "cz-conventional-changelog": "2.1.0",
     "eslint": "4.19.1",
-    "eslint-plugin-jest": "21.16.0",
+    "eslint-plugin-jest": "21.16.1",
     "eslint-plugin-prettier": "2.6.0",
     "fetch-mock": "5.13.1",
     "fs-extra": "6.0.1",
