@@ -4783,9 +4783,9 @@ rimraf@2, rimraf@2.6.2, rimraf@^2.2.8, rimraf@^2.5.1, rimraf@^2.5.4, rimraf@^2.6
   dependencies:
     glob "^7.0.5"
 
-rollup@0.60.0:
-  version "0.60.0"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.60.0.tgz#2c4acaaf3d8a858a81ff740d6253e21eeb58ff21"
+rollup@0.60.1:
+  version "0.60.1"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.60.1.tgz#07cb66153f1541d5f7e82b8393b405c31647dae9"
   dependencies:
     "@types/estree" "0.0.39"
     "@types/node" "*"
