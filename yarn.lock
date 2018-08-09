@@ -1820,9 +1820,9 @@ escodegen@^1.9.0:
   optionalDependencies:
     source-map "~0.5.6"
 
-eslint-plugin-jest@21.19.0:
-  version "21.19.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-21.19.0.tgz#edc37f4749ab65548bba46d944e6c5b5f89c450c"
+eslint-plugin-jest@21.20.0:
+  version "21.20.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-21.20.0.tgz#2504910ed8786ee6fb5ab60486b9c2baa59acd52"
 
 eslint-plugin-prettier@2.6.2:
   version "2.6.2"
