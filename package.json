@@ -65,7 +65,7 @@
     "prettier": "1.14.2",
     "rimraf": "2.6.2",
     "rollup": "0.65.2",
-    "semantic-release": "11.2.0"
+    "semantic-release": "15.9.14"
   },
   "config": {
     "commitizen": {
