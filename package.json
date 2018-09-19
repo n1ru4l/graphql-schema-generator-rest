@@ -20,7 +20,7 @@
     "url": "https://github.com/n1ru4l/graphql-schema-generator-rest"
   },
   "dependencies": {
-    "graphql-tools": "^2.6.1"
+    "graphql-tools": "^3.0.0"
   },
   "scripts": {
     "cm": "git-cz",
