@@ -5574,10 +5574,10 @@ rimraf@2, rimraf@2.6.2, rimraf@^2.2.8, rimraf@^2.5.1, rimraf@^2.5.4, rimraf@^2.6
   dependencies:
     glob "^7.0.5"
 
-rollup@0.67.1:
-  version "0.67.1"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.67.1.tgz#4094110c944d3c9e25b5bf196771b51132ec3adb"
-  integrity sha512-BfwL9pw5VyxrAWx/G1tP8epgG+NH4KcR78aoWacV7+dFp1Mj6ynH8QTIC/lDQ3KlwzDakqZmJQ4LQ7TmLg+pBA==
+rollup@0.67.2:
+  version "0.67.2"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.67.2.tgz#eb6be4147f448d88c388231391bacd54531b7fb7"
+  integrity sha512-zbfVHXlAgr6Wf0TMxfpRP7Z2etxoBpcjvNl75CwCAH9PAh/pEEmNTLb+T66Wo8z3LNlXsm9219qdPbndP75Eqg==
   dependencies:
     "@types/estree" "0.0.39"
     "@types/node" "*"
