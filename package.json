@@ -62,7 +62,7 @@
     "husky": "0.14.3",
     "jest": "23.6.0",
     "lint-staged": "7.3.0",
-    "prettier": "1.16.2",
+    "prettier": "1.16.3",
     "rimraf": "2.6.3",
     "rollup": "0.68.2",
     "semantic-release": "11.2.0"
