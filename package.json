@@ -52,7 +52,7 @@
     "copy-pkg": "1.0.0",
     "cross-env": "5.2.1",
     "cz-conventional-changelog": "2.1.0",
-    "eslint": "4.19.1",
+    "eslint": "7.28.0",
     "eslint-plugin-jest": "21.27.2",
     "eslint-plugin-prettier": "2.7.0",
     "fetch-mock": "5.13.1",
