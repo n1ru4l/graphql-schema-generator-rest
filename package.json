@@ -64,7 +64,7 @@
     "lint-staged": "7.3.0",
     "prettier": "1.19.1",
     "rimraf": "2.7.1",
-    "rollup": "0.68.2",
+    "rollup": "2.79.1",
     "semantic-release": "11.2.0"
   },
   "config": {
